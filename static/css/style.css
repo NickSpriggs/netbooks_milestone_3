@@ -15,11 +15,16 @@
     background-color: darkgreen;
 }
 
-.search-bar {
-    padding-left: 50px;
+.genre-bar {
+    color: white;
+    text-align: center;
 }
 
-.search-btn {
-    background-color: red;
-    margin-top: 23px;
+.genre-bar h3 {
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.genre-bar h5 {
+    margin: 20px;
 }

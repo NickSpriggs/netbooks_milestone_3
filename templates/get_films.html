@@ -3,11 +3,28 @@
 
 <section>
     <div class="row">
-        {% for film in films %} 
-            <div class="poster col s2">
-                {{ film.title }}         
-            </div>
-        {% endfor %}
+        <div class="col s10">
+            <section>
+                <div class="red">Search Bar</div>
+            </section>
+
+            {% for film in films %} 
+                <div class="poster col s2">
+                    {{ film.title }}         
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="genre-bar col s2">
+                <h3>Genre</h3>
+                <h5>Action</h5>
+                <h5>Horror</h5>                    
+                <h5>Sci-Fi</h5>    
+                <h5>Comdey</h5>
+                <h5>Romance</h5>
+                <h5>Fantasy</h5>
+        </div>
     </div>
 </section>
 
