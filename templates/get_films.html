@@ -1,0 +1,14 @@
+{% extends "base_template.html" %}
+{% block content_block_A %}
+
+<section>
+    <div class="row">
+        {% for film in films %} 
+            <div class="poster col s2">
+                {{ film.title }}         
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

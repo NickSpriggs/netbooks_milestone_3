@@ -1,0 +1,25 @@
+.small-logo {
+    padding-top: 8px;
+    padding-left: 20px;
+    height: 90%;
+}
+
+.dark-grey {
+    background-color: rgb(22, 22, 22);
+}
+
+.poster {
+    height: 300px;
+    text-align: center;
+    border: 1px white solid;
+    background-color: darkgreen;
+}
+
+.search-bar {
+    padding-left: 50px;
+}
+
+.search-btn {
+    background-color: red;
+    margin-top: 23px;
+}
