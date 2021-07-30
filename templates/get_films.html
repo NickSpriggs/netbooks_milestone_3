@@ -4,28 +4,76 @@
 <section>
     <div class="row">
         <div class="col s12">
+                <form action="{{ url_for('search')}}" method="post" class="col s12">
+                    <div class="row valign-wrapper center-align">
+                        <div class="input-field col s10">
+                            <i class="fas fa-search prefix red-text text-darken-"></i>
+                            <input type="text" name="query" id="query" minlength="3" class="validate" required>
+                            <label for="query">Search</label>
+                        </div>
+                        <div class="col s2">
+                            <button type="submit" class="red darken-1 btn" style="margin-top: 20px;">
+                                Search
+                            </button>
+                            {% if search %}
+                            <a href="{{ url_for('get_films')}}" class="red darken-1 btn" style="margin-top: 20px;">X</a>
+                            {% endif %}                    
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
 
-            <section>
-                <div class="red">The</div>
-                <div class="red">Search</div>
-                <div class="red">Bar</div>
-            </section>
+    <div class="row">
+        <div class="col s12">
 
             {% if 5==5 %}
             <div class="poster col l2 m3 s4">
-                <div class="add-poster">+</div>
+                <div class="add-poster">+</div>                
             </div>
             {% endif %}
 
             {% for film in films %} 
-            <div class="poster col l2 m3 s4">
-                <div class="poster-img" style="background-image: url({{film.poster_url}}); height: 340px; background-position: center;
-                background-size:cover;">{{ film.title }}</div>    
-            </div>
+                <div class="poster col l2 m3 s4">
+                    <div class="poster-img" style="background-image: url({{film.poster_url}}); 
+                    height: 340px; background-position: center; background-size:cover;"
+                    onclick="on('{{ film.title }}', '{{ film.genre }}', '{{film.poster_url}}')">
+                        {{ film.title }}
+                    </div>    
+                </div>
             {% endfor %}
 
+            <div id="overlay_profile" class="col s12" style="position: fixed; display: none; width: 100%; 
+            height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
+            color: white; font-size: 30px;">
+                <div id="profile_box" class="col s12" onclick="off()">
+                    <div class="poster col l2 m3 s4">
+                        <div id="profile-poster" class="poster-img" style="height: 340px; background-position: center; background-size:cover;"></div>  
+                    </div>
+                    <div id="profile-title-box">Title: </div>
+                    <div id="profile-genre-box">Genre(s): </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+<script>
+    profilebox = document.getElementById("profile_box").innerHTML;
+
+    function on(title, genres, poster_url) {
+      document.getElementById("overlay_profile").style.display = "block";
+      url = "url('" + poster_url + "')"; 
+
+      document.getElementById("profile-poster").style.backgroundImage = url;
+      document.getElementById("profile-title-box").innerHTML += title;
+      document.getElementById("profile-genre-box").innerHTML += genres;
+    }
+    
+    function off() {
+      document.getElementById("overlay_profile").style.display = "none";
+      document.getElementById("profile_box").innerHTML = profilebox;
+    }
+</script>
 
 {% endblock %}

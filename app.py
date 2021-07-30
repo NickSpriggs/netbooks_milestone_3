@@ -24,6 +24,17 @@ def get_films():
     films = mongo.db.film_list.find()
     return render_template("get_films.html", films=films)
 
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if request.method == "POST":
+        query = request.form.get("query")
+        films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
+        search = True
+        return render_template("get_films.html", films=films, search=search)
+    return get_films()
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
