@@ -45,14 +45,18 @@
             <div id="overlay_profile" style="position: fixed; display: none; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 30px;">
-                <div id="profile_box" onclick="off()">
+                <div id="profile_box">
                     <div class="col l2 m3 s4" style="padding: 0px;">
                         <div id="profile-poster" style="height: 340px; background-position: center; background-size:cover;"></div>  
                     </div>
-                    <div id="profile-title-box" class="col l10">Title: </div>
-                    <div id="profile-genre-box" class="col l10">Genre(s): </div>
-                    <div id="profile-rec-box" class="col l10">Recommendations: 
+                    <div id="profile-title-box" class="col l10 m8 s7">Title: </div>
+                    <div id="profile-genre-box" class="col l10 m8 s7">Genre: </div>
+                    <div id="profile-rec-box" class="col l10 m8 s7">Recommendations: 
                         <div id="rec-list-box" class="col l10"></div>
+                    </div>
+                    <div class="col l9">
+                        <button class="red btn darken-1">Add</button>
+                        <button class="red btn darken-1" onclick="off()">Back</button>
                     </div>
                 </div>
             </div>
@@ -81,8 +85,8 @@
                     </div>     
                     
                     <div class="col l10" style="padding-left: 20px">
-                        <button onclick="addOff()" class="btn-large red darken-1">Quit</button>
                         <button type="submit" class="btn-large red darken-1">Add Film <i class="fas fa-plus-square right"></i></button>
+                        <button onclick="addOff()" class="btn-large red darken-1">Back</button>
                     </div>
 
                 </form>
@@ -94,7 +98,6 @@
 <script>
     profilebox = document.getElementById("profile_box").innerHTML;
     addbox = document.getElementById("add_box").innerHTML;
-
 
     function on(title, genre, poster_url) {
       document.getElementById("overlay_profile").style.display = "block";
