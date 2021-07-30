@@ -24,17 +24,6 @@
     background-color: rgba(156, 148, 148, 0.11);
 }
 
-.col.poster:hover {
-    border: .8px solid red;
-    color: white;
-}
-
-.add-poster {
-    padding-top: 50%;
-    text-align: center;
-    font-size: 50px; 
-}
-
 .poster-img {
     padding-top: 55%;
     text-align: center;
@@ -44,7 +33,7 @@
 
 .poster-img:hover {
     color: white;
-    border: .8px solid red;
+    border: 1px solid red;
     text-shadow: black 1px 1px;
 }
 

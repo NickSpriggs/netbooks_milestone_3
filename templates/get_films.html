@@ -28,7 +28,7 @@
         <div>
             {% if 5==5 %}
             <div class="poster col l2 m3 s4" onclick="addOn()">
-                <div class="add-poster">+</div>                
+                <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
             </div>
             {% endif %}
 
@@ -66,8 +66,8 @@
             color: white; font-size: 30px;">
                 <form id="add_box"  method="POST" action="{{ url_for('add_film') }}">
                     <div id="user_url" class="poster col l2 m3 s4" onclick="getURL()" style="height: 340px; background-position: center; background-size:cover;">
-                        <div class="add-poster">+</div>
-                        <input id="user_poster_url" name="user_poster_url" type="text" class="validate" style="display: none;">                
+                        <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
+                        <input id="user_poster_url" name="user_poster_url" type="text" class="validate" minlength="5" maxlength="50" required style="display: none;">                
                     </div>
 
                     <div class="input-field col l10" style="margin-top: 15px;">
@@ -85,7 +85,7 @@
                     </div>     
                     
                     <div class="col l10" style="padding-left: 20px">
-                        <button type="submit" class="btn-large red darken-1">Add Film <i class="fas fa-plus-square right"></i></button>
+                        <button type="submit" onclick="checkForImg()" class="btn-large red darken-1">Add Film <i class="fas fa-plus-square right"></i></button>
                         <button onclick="addOff()" class="btn-large red darken-1">Back</button>
                     </div>
 
@@ -130,6 +130,14 @@
         document.getElementById("user_poster_url").value = drag;
       }
     }
+
+    function checkForImg() {
+      img = document.getElementById("user_poster_url").value;
+      if(img.length < 5) {
+        getURL();
+      }
+    }
+
 </script>
 
 {% endblock %}
