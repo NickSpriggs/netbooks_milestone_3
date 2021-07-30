@@ -3,27 +3,27 @@
 
 <section>
     <div class="row">
-        <div class="col s10">
+        <div class="col s12">
+
             <section>
-                <div class="red">Search Bar</div>
+                <div class="red">The</div>
+                <div class="red">Search</div>
+                <div class="red">Bar</div>
             </section>
 
+            {% if 5==5 %}
+            <div class="poster col l2 m3 s4">
+                <div class="add-poster">+</div>
+            </div>
+            {% endif %}
+
             {% for film in films %} 
-                <div class="poster col s2">
-                    {{ film.title }}         
-                </div>
+            <div class="poster col l2 m3 s4">
+                <div class="poster-img" style="background-image: url({{film.poster_url}}); height: 340px; background-position: center;
+                background-size:cover;">{{ film.title }}</div>    
+            </div>
             {% endfor %}
 
-        </div>
-
-        <div class="genre-bar col s2">
-                <h3>Genre</h3>
-                <h5>Action</h5>
-                <h5>Horror</h5>                    
-                <h5>Sci-Fi</h5>    
-                <h5>Comdey</h5>
-                <h5>Romance</h5>
-                <h5>Fantasy</h5>
         </div>
     </div>
 </section>
