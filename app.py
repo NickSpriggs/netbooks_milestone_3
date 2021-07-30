@@ -35,6 +35,21 @@ def search():
     return get_films()
 
 
+@app.route("/add_film", methods=["GET", "POST"])
+def add_film():
+    if request.method == "POST":
+        film = {
+            "title": request.form.get("title"),
+            "genre": request.form.get("genre"),
+            "poster_url": request.form.get("user_poster_url"),
+        }
+        mongo.db.film_list.insert_one(film)
+        flash("Film Successfully Added")
+        return redirect(url_for("get_films"))
+
+    return render_template("get_films.html")
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),

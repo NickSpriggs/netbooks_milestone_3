@@ -25,10 +25,9 @@
     </div>
 
     <div class="row">
-        <div class="col s12">
-
+        <div>
             {% if 5==5 %}
-            <div class="poster col l2 m3 s4">
+            <div class="poster col l2 m3 s4" onclick="addOn()">
                 <div class="add-poster">+</div>                
             </div>
             {% endif %}
@@ -37,22 +36,56 @@
                 <div class="poster col l2 m3 s4">
                     <div class="poster-img" style="background-image: url({{film.poster_url}}); 
                     height: 340px; background-position: center; background-size:cover;"
-                    onclick="on('{{ film.title }}', '{{ film.genre }}', '{{film.poster_url}}')">
+                    onclick='on("{{ film.title }}", "{{ film.genre }}", "{{ film.poster_url }}")'>
                         {{ film.title }}
-                    </div>    
+                    </div> 
                 </div>
             {% endfor %}
 
-            <div id="overlay_profile" class="col s12" style="position: fixed; display: none; width: 100%; 
+            <div id="overlay_profile" style="position: fixed; display: none; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 30px;">
-                <div id="profile_box" class="col s12" onclick="off()">
-                    <div class="poster col l2 m3 s4">
-                        <div id="profile-poster" class="poster-img" style="height: 340px; background-position: center; background-size:cover;"></div>  
+                <div id="profile_box" onclick="off()">
+                    <div class="col l2 m3 s4" style="padding: 0px;">
+                        <div id="profile-poster" style="height: 340px; background-position: center; background-size:cover;"></div>  
                     </div>
-                    <div id="profile-title-box">Title: </div>
-                    <div id="profile-genre-box">Genre(s): </div>
+                    <div id="profile-title-box" class="col l10">Title: </div>
+                    <div id="profile-genre-box" class="col l10">Genre(s): </div>
+                    <div id="profile-rec-box" class="col l10">Recommendations: 
+                        <div id="rec-list-box" class="col l10"></div>
+                    </div>
                 </div>
+            </div>
+
+            <div id="overlay_addfilms" style="position: fixed; display: none; width: 100%; 
+            height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
+            color: white; font-size: 30px;">
+                <form id="add_box"  method="POST" action="{{ url_for('add_film') }}">
+                    <div id="user_url" class="poster col l2 m3 s4" onclick="getURL()" style="height: 340px; background-position: center; background-size:cover;">
+                        <div class="add-poster">+</div>
+                        <input id="user_poster_url" name="user_poster_url" type="text" class="validate" style="display: none;">                
+                    </div>
+
+                    <div class="input-field col l10" style="margin-top: 15px;">
+                        <div id="profile-title-box" class="col l8"> 
+                            Title: <input id="title" name="title" type="text" class="validate" 
+                            minlength="5" maxlength="50" required>
+                        </div>
+                    </div>
+
+                    <div class="input-field col l10" style="margin-bottom: 5px">
+                        <div id="profile-genre-box" class="col l8"> 
+                            Genre(s): <input id="genre" name="genre" type="text" class="validate" 
+                            minlength="5" maxlength="50" required>
+                        </div>
+                    </div>     
+                    
+                    <div class="col l10" style="padding-left: 20px">
+                        <button onclick="addOff()" class="btn-large red darken-1">Quit</button>
+                        <button type="submit" class="btn-large red darken-1">Add Film <i class="fas fa-plus-square right"></i></button>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
@@ -60,19 +93,39 @@
 
 <script>
     profilebox = document.getElementById("profile_box").innerHTML;
+    addbox = document.getElementById("add_box").innerHTML;
 
-    function on(title, genres, poster_url) {
+
+    function on(title, genre, poster_url) {
       document.getElementById("overlay_profile").style.display = "block";
       url = "url('" + poster_url + "')"; 
 
       document.getElementById("profile-poster").style.backgroundImage = url;
       document.getElementById("profile-title-box").innerHTML += title;
-      document.getElementById("profile-genre-box").innerHTML += genres;
+      document.getElementById("profile-genre-box").innerHTML += genre;
     }
     
     function off() {
       document.getElementById("overlay_profile").style.display = "none";
       document.getElementById("profile_box").innerHTML = profilebox;
+    }
+
+    function addOn() {
+      document.getElementById("overlay_addfilms").style.display = "block";
+    }
+
+    function addOff() {
+      document.getElementById("overlay_addfilms").style.display = "none";
+      document.getElementById("add_box").innerHTML = addbox;
+    }
+
+    function getURL() {
+      var drag = prompt("Copy/paste url for film poster:", "");
+      if (drag != null) {
+        url = "url('" + drag + "')"; 
+        document.getElementById("user_url").style.backgroundImage = url;
+        document.getElementById("user_poster_url").value = drag;
+      }
     }
 </script>
 
