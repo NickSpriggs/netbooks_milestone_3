@@ -35,6 +35,13 @@ def search():
     return get_films()
 
 
+@app.route("/genre_search/<genre>")
+def genre_search(genre):
+    films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
+    search = True
+    return render_template("get_films.html", films=films, search=search)
+
+
 @app.route("/add_film", methods=["GET", "POST"])
 def add_film():
     if request.method == "POST":

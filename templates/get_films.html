@@ -3,81 +3,91 @@
 
 <section>
     <div class="row">
-        <div class="col s12">
-                <form action="{{ url_for('search')}}" method="post" class="col s12">
-                    <div class="row valign-wrapper center-align">
-                        <div class="input-field col s10">
-                            <i class="fas fa-search prefix red-text text-darken-"></i>
+        <div class="col s10">
+            <form action="{{ url_for('search')}}" method="post">
+                <div class="row valign-wrapper center-align">
+                    <div class="input-field col s10">
+                        <i class="fas fa-search prefix red-text text-darken-"></i>                            
                             <input type="text" name="query" id="query" minlength="3" class="validate" required>
                             <label for="query">Search</label>
-                        </div>
-                        <div class="col s2">
-                            <button type="submit" class="red darken-1 btn" style="margin-top: 20px;">
-                                Search
-                            </button>
-                            {% if search %}
-                            <a href="{{ url_for('get_films')}}" class="red darken-1 btn" style="margin-top: 20px;">X</a>
-                            {% endif %}                    
-                        </div>
                     </div>
-                </form>
-        </div>
-    </div>
-
-    <div class="row">
-        <div>
-            {% if 5==5 %}
-            <div class="poster col l2 m3 s4" onclick="addOn()">
-                <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
-            </div>
-            {% endif %}
-
-            {% for film in films %} 
-                <div class="poster col l2 m3 s4">
-                    <div class="poster-img" style="background-image: url({{film.poster_url}}); 
-                    height: 340px; background-position: center; background-size:cover;"
-                    onclick='on("{{ film.title }}", "{{ film.genre }}", "{{ film.poster_url }}")'>
-                        {{ film.title }}
-                    </div> 
+                    <div class="col s2">
+                        <button type="submit" class="red darken-1 btn" style="margin-top: 20px;">
+                            Search
+                        </button>
+                        {% if search %}
+                        <a href="{{ url_for('get_films')}}" class="red darken-1 btn" style="margin-top: 20px;">X</a>
+                        {% endif %}                    
+                    </div>
                 </div>
-            {% endfor %}
+            </form>
 
-            <div id="overlay_profile" style="position: fixed; display: none; width: 100%; 
+            <div>
+                {% if 5==5 %}
+                <div class="poster col s2" onclick="addOn()">
+                    <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
+                </div>
+                {% endif %}
+
+                {% for film in films %} 
+                    <div class="poster col s2">
+                        <div class="poster-img" style="background-image: url({{film.poster_url}}); 
+                        height: 100%; background-position: center; background-size:cover;"
+                        onclick='on("{{ film.title }}", "{{ film.genre }}", "{{ film.poster_url }}")'>
+                            {{ film.title }}
+                        </div> 
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="fixed col s2" style="color: rgb(255, 255, 255); right: 0;">
+            <div class="row">
+                <div style="padding-top: 16px; padding-bottom: 5px; text-align: center; font-size: 50px;">Genres</div>
+            </div>
+            <div class="row">    
+                <a href="{{ url_for('genre_search', genre='action') }}">
+                    <div style="padding-bottom: 5px; text-align: center; font-size: 30px;">Action</div>
+                </a>
+            </div>        
+        </div>
+
+
+        <div id="overlay_profile" class="col s12" style="position: fixed; display: none; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 30px;">
-                <div id="profile_box">
-                    <div class="col l2 m3 s4" style="padding: 0px;">
-                        <div id="profile-poster" style="height: 340px; background-position: center; background-size:cover;"></div>  
+                <div id="profile_box" class="no-pad col s10">
+                    <div class="col s2" style="padding: 0px;">
+                        <div id="profile-poster" style="height: 300px; background-position: center; background-size:cover;"></div>  
                     </div>
                     <div id="profile-title-box" class="col l10 m8 s7">Title: </div>
                     <div id="profile-genre-box" class="col l10 m8 s7">Genre: </div>
-                    <div id="profile-rec-box" class="col l10 m8 s7">Recommendations: 
-                        <div id="rec-list-box" class="col l10"></div>
-                    </div>
-                    <div class="col l9">
+                    <div class="col l10">
                         <button class="red btn darken-1">Add</button>
                         <button class="red btn darken-1" onclick="off()">Back</button>
                     </div>
+                    <div id="profile-rec-box" style="font-size: 20px;" class="col l10 m8 s7">Recommendations: 
+                        <div id="rec-list-box" class="col l10"></div></div>
                 </div>
-            </div>
+        </div>
 
-            <div id="overlay_addfilms" style="position: fixed; display: none; width: 100%; 
+        <div id="overlay_addfilms" class="col s12" style="position: fixed; display: none; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 30px;">
-                <form id="add_box"  method="POST" action="{{ url_for('add_film') }}">
-                    <div id="user_url" class="poster col l2 m3 s4" onclick="getURL()" style="height: 340px; background-position: center; background-size:cover;">
+                <form id="add_box"  class="no-pad col s10" method="POST" action="{{ url_for('add_film') }}">
+                    <div id="user_url" class="poster col s2" onclick="getURL()" style="height: 300px; background-position: center; background-size:cover;">
                         <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
                         <input id="user_poster_url" name="user_poster_url" type="text" class="validate" minlength="5" maxlength="50" required style="display: none;">                
                     </div>
 
-                    <div class="input-field col l10" style="margin-top: 15px;">
+                    <div class="input-field col l10" style="margin-top: 10px;">
                         <div id="profile-title-box" class="col l8"> 
                             Title: <input id="title" name="title" type="text" class="validate" 
                             minlength="5" maxlength="50" required>
                         </div>
                     </div>
 
-                    <div class="input-field col l10" style="margin-bottom: 5px">
+                    <div class="input-field col l10" style="margin-top: 0px; margin-bottom: 10px;">
                         <div id="profile-genre-box" class="col l8"> 
                             Genre(s): <input id="genre" name="genre" type="text" class="validate" 
                             minlength="5" maxlength="50" required>
@@ -90,9 +100,8 @@
                     </div>
 
                 </form>
-            </div>
         </div>
-    </div>
+
 </section>
 
 <script>

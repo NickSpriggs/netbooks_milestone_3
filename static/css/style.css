@@ -17,11 +17,22 @@
     font-size: 25px;
 }
 
+.fixed {
+    height: 100%;
+    padding-top: 16px;
+    position: fixed;
+    top: 60px;
+  }
+
 .col.poster {
-    height: 340px;
+    height: 300px;
     padding: 0px;
     color: rgba(189, 189, 189, 0.788);
     background-color: rgba(156, 148, 148, 0.11);
+}
+
+.col.no-pad {
+    padding: 0px;
 }
 
 .poster-img {
@@ -38,13 +49,14 @@
 }
 
 #profile_box {
-    height: 340px;
-    margin: 193px 0px 0px 0px;
+    height: 300px;
+    margin: 173px 0px 0px 0px;
     background-color: rgb(24, 23, 23);
 }
 
 #add_box {
-    height: 340px;
-    margin: 193px 0px 0px 0px;
+    height: 300px;
+    margin: 173px 0px 0px 0px;
     background-color: rgb(24, 23, 23);
 }
+
