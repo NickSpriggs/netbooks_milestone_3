@@ -22,7 +22,8 @@ mongo = PyMongo(app)
 @app.route("/get_films")
 def get_films():
     films = mongo.db.film_list.find()
-    return render_template("get_films.html", films=films)
+    recs = mongo.db.rec_list.find()
+    return render_template("get_films.html", films=films, recs=recs)
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -30,16 +31,19 @@ def search():
     if request.method == "POST":
         query = request.form.get("query")
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
+        recs = mongo.db.rec_list.find()
         search = True
-        return render_template("get_films.html", films=films, search=search)
+        return render_template("get_films.html", films=films, recs=recs, 
+        search=search) 
     return get_films()
 
 
 @app.route("/genre_search/<genre>")
 def genre_search(genre):
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
+    recs = mongo.db.rec_list.find()
     search = True
-    return render_template("get_films.html", films=films, search=search)
+    return render_template("get_films.html", films=films, search=search, recs=recs)
 
 
 @app.route("/add_film", methods=["GET", "POST"])

@@ -60,3 +60,10 @@
     background-color: rgb(24, 23, 23);
 }
 
+a div {
+    color: white;
+}
+
+a div:hover {
+    color: rgb(173, 11, 11);
+}
