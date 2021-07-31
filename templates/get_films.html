@@ -98,6 +98,7 @@
 <script>
     profilebox = document.getElementById("profile_box").innerHTML;
     addbox = document.getElementById("add_box").innerHTML;
+    url = 0;
 
     function on(title, genre, poster_url) {
       document.getElementById("overlay_profile").style.display = "block";
@@ -120,10 +121,11 @@
     function addOff() {
       document.getElementById("overlay_addfilms").style.display = "none";
       document.getElementById("add_box").innerHTML = addbox;
+      url = 0;
     }
 
     function getURL() {
-      var drag = prompt("Copy/paste url for film poster:", "");
+      var drag = prompt("Please copy/paste url of film poster:", "");
       if (drag != null) {
         url = "url('" + drag + "')"; 
         document.getElementById("user_url").style.backgroundImage = url;
@@ -132,9 +134,9 @@
     }
 
     function checkForImg() {
-      img = document.getElementById("user_poster_url").value;
-      if(img.length < 5) {
-        getURL();
+      num = url.length - 7
+      if (num < 5) {
+        getURL()
       }
     }
 
