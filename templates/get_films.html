@@ -42,8 +42,12 @@
                     <div id="{{ film.title }}_recommendations" style="display: none;">
                         {% for rec in recs %}
                             {% if film.title == rec.title %}
-                                <div class="recs">Title: {{ rec.book }}</div>
-                                <div class="recs">Author: {{ rec.author }}</div>
+                                <div class="recs">Title: {{ rec.book }}
+                                    <img style="height: 20px; cursor: pointer;" onclick='amazonLink("{{ rec.book }}", "{{ rec.author }}")' src="static/img/amazon-icon.png">
+                                </div>
+                                <div class="recs">Author: {{ rec.author }}
+
+                                </div>
                                 <div>----------------------------</div>
                             {% endif %}
                         {% endfor %}
@@ -189,6 +193,16 @@
       if (num < 5) {
         getURL()
       }
+    }
+
+    function amazonLink(title, author) {
+        var str1 = title;
+        var str2 = author;
+
+        str1.replaceAll(' ', '+');
+        str2.replaceAll(' ', '+');
+        link = "https://www.amazon.com/s?k=" + str1 + "+by+" + str2 + "&ref=nb_sb_noss_1";
+        window.open(link);
     }
 
 </script>
