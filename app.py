@@ -69,6 +69,25 @@ def add_film():
     return render_template("get_films.html")
 
 
+@app.route("/edit_film/<film_title>", methods=["GET", "POST"])
+def edit_film(film_title):
+    if request.method == "POST": 
+        submit = {
+            "title": request.form.get("title"),
+            "genre": request.form.get("genre"),
+            "poster_url": request.form.get("user_poster_url"),
+        }
+        newTitle = request.form.get("title")
+        mongo.db.film_list.update({"title": film_title}, submit)
+        mongo.db.rec_list.update_many({"title": film_title}, {"$set": {"title": newTitle}})     
+        return get_film(newTitle)
+
+    film = mongo.db.film_list.find_one({"title": film_title})
+    films = mongo.db.film_list.find()
+    return render_template("get_films.html", film=film, films=films, 
+    overlay_edit=True)
+
+
 @app.route("/add_rec", methods=["GET", "POST"])
 def add_rec():
     if request.method == "POST":
