@@ -61,6 +61,21 @@ def add_film():
     return render_template("get_films.html")
 
 
+@app.route("/add_rec", methods=["GET", "POST"])
+def add_rec():
+    if request.method == "POST":
+        rec = {
+            "title": request.form.get("title"),
+            "book": request.form.get("book"),
+            "author": request.form.get("author"),
+        }
+        mongo.db.rec_list.insert_one(rec) 
+        flash("Successfully Added")
+        return redirect(url_for("get_films"))
+    
+    return render_template("get_films.html")
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),

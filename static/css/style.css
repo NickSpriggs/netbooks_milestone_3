@@ -58,6 +58,13 @@
     background-color: rgb(24, 23, 23);
 }
 
+#add_rec_box {
+    margin-top: 173px;
+    margin-left: 25%;
+    height: 400px;
+    background-color: rgb(24, 23, 23);
+}
+
 a div {
     color: white;
 }
