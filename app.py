@@ -88,6 +88,14 @@ def edit_film(film_title):
     overlay_edit=True)
 
 
+@app.route("/delete_film/<film_title>")
+def delete_film(film_title):
+    mongo.db.film_list.remove({"title": film_title})
+    mongo.db.rec_list.remove({"title": film_title})     
+    flash("Film Successfully Deleted")
+    return redirect(url_for("get_films"))
+
+
 @app.route("/add_rec", methods=["GET", "POST"])
 def add_rec():
     if request.method == "POST":
