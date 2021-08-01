@@ -1,0 +1,39 @@
+{% extends "base_template.html" %}
+{% block content_block_A %}
+
+<h3 class="center-align">Login</h3>
+
+<div class="row">
+    <form class="col s12 m8 offset-m2" method="POST" action="{{ url_for('login') }}">
+      <div class="card-panel" style="margin-top: 80px;">
+        <div class="row">
+            <div style="font-size: 50px; text-align: center;">Login</div>
+            <div class="input-field col s12">
+                <!-- i is the icon and "fas fa-user-cog" is the icon name, everything else is for color of icon-->
+                <i class="fas fa-user-cog prefix red-text text-darken-4"></i>
+                <input id="username" name="username" type="text" style="color: black;" minlength= "5" 
+                maxlength="15" pattern="^[a-zA-Z0-9]{5, 15}$" class="validate" required>
+                <!-- pattern limits to: a to z, A to Z, 0 to 9, and between 5 and 15 characters-->
+                <!-- label is whats written in the input box -->
+                <label for="username">Username</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="fas fa-user-lock prefix red-text text-darken-4"></i>
+                <input id="password" name="password" type="password" minlength= "5" style="color: black;"
+                maxlength="15" pattern="^[a-zA-Z0-9]{5, 15}$" class="validate" required>
+                <label for="password">Password</label>
+            </div>
+          </div>
+          <!-- Registration Button -->
+          <div class="row">
+              <button type="submit" class="col s12 btn-large red darken-4 text-shadow">
+                  Login <i class="fas fa-sign-in-alt"></i>
+              </button>
+          </div>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

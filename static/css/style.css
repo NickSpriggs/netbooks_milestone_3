@@ -29,7 +29,7 @@
 }
 
 .poster-img {
-    padding-top: 55%;
+    padding-top: 55%; 
     text-align: center;
     font-size: 28px;
     color: rgba(197, 125, 125, 0);
@@ -82,7 +82,7 @@ a div:hover {
     position: fixed;
     width: 83%;
     padding-bottom: 40px;
-    padding-top: 10px;
+    top: 63px;
     background-color: black;
 }
 
@@ -104,5 +104,12 @@ a div:hover {
 
     #film-poster-section {
       padding-top: 197px;  
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+.fixed-search {
+    top: 53px;
     }
 }
