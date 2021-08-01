@@ -26,6 +26,14 @@ def get_films():
     return render_template("get_films.html", films=films, recs=recs)
 
 
+@app.route("/get_film/<film_title>")
+def get_film(film_title):
+    film = mongo.db.film_list.find_one({"title": film_title})
+    films = mongo.db.film_list.find()
+    recs = mongo.db.rec_list.find()
+    return render_template("get_films.html", film=film, films=films, recs=recs, overlay_profile=True)
+
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == "POST":
@@ -71,9 +79,9 @@ def add_rec():
         }
         mongo.db.rec_list.insert_one(rec) 
         flash("Successfully Added")
-        return redirect(url_for("get_films"))
+        return get_film(request.form.get("title"))
     
-    return render_template("get_films.html")
+    return get_film(request.form.get("title"))
 
 
 if __name__ == "__main__":

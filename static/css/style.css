@@ -17,13 +17,6 @@
     font-size: 25px;
 }
 
-.fixed {
-    height: 100%;
-    padding-top: 16px;
-    position: fixed;
-    top: 60px;
-  }
-
 .col.poster {
     height: 300px;
     padding: 0px;
@@ -71,4 +64,45 @@ a div {
 
 a div:hover {
     color: rgb(173, 11, 11);
+}
+
+#film-poster-section {
+    padding-top: 131px;  
+  }
+
+.fixed {
+    height: 500px;
+    font-size: 30px;
+    padding-top: 16px;
+    position: fixed;
+    top: 60px;
+  }
+
+.fixed-search {
+    position: fixed;
+    width: 83%;
+    padding-bottom: 40px;
+    padding-top: 10px;
+    background-color: black;
+}
+
+@media only screen and (max-width: 992px) {
+    .fixed {
+      height: 90px;
+      font-size: 25px;
+      top: 170px;
+      background-color: lightblue;
+    }
+
+    .genre-title {
+        display: none;
+    }
+
+    .fixed-search {
+        width: 100%;
+    }
+
+    #film-poster-section {
+      padding-top: 197px;  
+    }
 }
