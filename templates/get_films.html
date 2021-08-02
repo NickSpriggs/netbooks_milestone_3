@@ -114,13 +114,25 @@
                             <div id="rec-list-box">
                                 {% for rec in recs %}
                                     {% if film.title == rec.title %}
-                                        <div class="col l4" style="padding-bottom: 5px; border: black 1px solid; 
-                                        background-color: rgb(207, 3, 3); font-size: 14px;">
-                                            <div class="recs">Title: {{ rec.book }}
-                                                <img style="height: 20px; cursor: pointer; padding-top: 4px;" onclick='amazonLink("{{ rec.book }}", "{{ rec.author }}")' src="https://nicholasspriggs.weebly.com/uploads/7/9/7/8/79787400/amazon-icon_orig.png">
-                                            </div>
-                                            <div class="recs">Author: {{ rec.author }}</div>
-                                        </div>
+                                        {% if session.user|lower == "admin"|lower %}
+                                            <div class="col l4" style="padding-bottom: 5px; border: black 1px solid; 
+                                            background-color: rgb(207, 3, 3); font-size: 14px;">
+                                                <div class="recs">Title: {{ rec.book }}
+                                                    <img style="height: 20px; cursor: pointer; padding-top: 4px;" onclick='amazonLink("{{ rec.book }}", "{{ rec.author }}")' src="https://nicholasspriggs.weebly.com/uploads/7/9/7/8/79787400/amazon-icon_orig.png">
+                                                </div>
+                                                <div class="recs">Author: {{ rec.author }}</div>
+                                                <a style="font-size: 18px; color: rgb(3, 3, 158);" 
+                                                href="{{ url_for('edit_rec', film_title=film.title, book=rec.book ) }}">Edit</a>
+                                            </div>   
+                                        {% else %}
+                                            <div class="col l4" style="padding-bottom: 5px; border: black 1px solid; 
+                                            background-color: rgb(207, 3, 3); font-size: 14px;">
+                                                <div class="recs">Title: {{ rec.book }}
+                                                    <img style="height: 20px; cursor: pointer; padding-top: 4px;" onclick='amazonLink("{{ rec.book }}", "{{ rec.author }}")' src="https://nicholasspriggs.weebly.com/uploads/7/9/7/8/79787400/amazon-icon_orig.png">
+                                                </div>
+                                                <div class="recs">Author: {{ rec.author }}</div>
+                                            </div>                                        
+                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -206,6 +218,39 @@
                         </div>
                     </form>
             </div>
+        {% endif %}
+
+        {% if overlay_rec_edit %} 
+            <div id="overlay_addrecs" class="col s12" style="position: fixed; display: block; width: 100%; 
+            height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
+            color: white; font-size: 24px;">
+                <form id="add_rec_box" class="no-pad col s5" 
+                method="POST" action="{{ url_for('edit_rec') }}">
+                    <div style="margin-top: 10px; text-align: center;">Edit Book</div>
+
+                    <input id="rec_film_title" name="title" type="text" class="validate" required style="display: none;">                
+
+                    <div class="input-field col l12" style="margin-top: 20px;">
+                        <div id="profile-title-box" class="col l12"> 
+                            Book Name: <input id="book" name="book" type="text" class="validate" 
+                            minlength="3" maxlength="50" required>
+                        </div>
+                    </div>
+
+                    <div class="input-field col l12" style="margin-top: 0px; margin-bottom: 10px;">
+                        <div id="profile-title-box" class="col l12"> 
+                            Author: <input id="author" name="author" type="text" class="validate" 
+                            minlength="5" maxlength="50" required>
+                        </div>
+                    </div>     
+                    
+                    <div class="col l12" style="padding-left: 20px">                             
+                        <button type="submit" style="margin-bottom: 10px;" class="btn-large red darken-1">Save</i></button>
+                        <button onclick="recOff()" style="margin-bottom: 10px;" class="btn-large red darken-1">Back</button>
+                    </div>
+
+                </form>
+            </div>          
         {% endif %}
 
         <div id="overlay_addfilms" class="col s12" style="position: fixed; display: none; width: 100%; 

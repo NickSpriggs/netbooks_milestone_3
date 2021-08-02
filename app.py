@@ -111,6 +111,21 @@ def add_rec():
     return get_film(request.form.get("title"))
 
 
+@app.route("/edit_rec/<film_title>/<book>", methods=["GET", "POST"])
+def edit_rec(film_title, book):
+    if request.method == "POST": 
+        recommend = {
+            "title": request.form.get("title"),
+            "book": request.form.get("book"),
+            "author": request.form.get("author"),
+        }
+        mongo.db.rec_list.update_one({"book": book}, recommend)     
+        return get_film(request.form.get("title"))
+
+    # Here is where you left off...how to edit recommendations
+    return get_films()
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
