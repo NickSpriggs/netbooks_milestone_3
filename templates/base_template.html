@@ -19,26 +19,24 @@
       <nav class="dark-grey" style="position: fixed; top: 0px">
         <div class="nav-wrapper">
           <a href="{{ url_for('get_films')}}"><img src="https://fontmeme.com/permalink/210729/7c4f14820fc13e73ba00a7ff096daf55.png" alt="netflix-font" class="small-logo"></a>
-          <a href="#" data-target="mobile-demo" class="right sidenav-trigger"><i class="material-icons">Menu</i></a>
-          <ul class="right hide-on-med-and-down">
-            {% if session.user %}
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
+          {% if session.user %}
+          <ul class="right" style="width: 17%;">          
+              <li style="float: none;">
+                <a class='dropdown-trigger' style="background-color: rgb(190, 10, 10); text-align: center;
+                float: none;" data-target='dropdown1'>{{session.user|upper}}
+                </a>
+              </li>           
+              <li><a id='dropdown1' class='dropdown-content' style="background-color: white; 
+              color: red; text-align: center;" href="{{ url_for('logout') }}">LOGOUT</a></li>
+          </ul>
+          {% else %}
+          <ul class="right">
               <li><a href="{{ url_for('login') }}">Login</a></li>
               <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
           </ul>
+          {% endif %}
         </div>
       </nav>
-    
-      <ul class="sidenav" id="mobile-demo">
-        {% if session.user %}
-        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('login') }}">Login</a></li>
-          <li><a href="{{ url_for('register') }}">Register</a></li>
-        {% endif %}
-      </ul>
     </header>
 
     {% block content_block_A %}

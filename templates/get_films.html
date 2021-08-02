@@ -114,15 +114,15 @@
                             <div id="rec-list-box">
                                 {% for rec in recs %}
                                     {% if film.title == rec.title %}
-                                        {% if session.user|lower == "admin"|lower %}
+                                        {% if (session.user|lower == "admin"|lower or session.user|lower == rec.creator|lower) %}
                                             <div class="col l4" style="padding-bottom: 5px; border: black 1px solid; 
                                             background-color: rgb(207, 3, 3); font-size: 14px;">
                                                 <div class="recs">Title: {{ rec.book }}
                                                     <img style="height: 20px; cursor: pointer; padding-top: 4px;" onclick='amazonLink("{{ rec.book }}", "{{ rec.author }}")' src="https://nicholasspriggs.weebly.com/uploads/7/9/7/8/79787400/amazon-icon_orig.png">
+                                                    <a style="font-size: 14px; color:rgb(0, 60, 255); float: right; font-style: inherit;" 
+                                                    href="{{ url_for('edit_rec', film_title=film.title, book=rec.book ) }}">Edit</a> 
                                                 </div>
                                                 <div class="recs">Author: {{ rec.author }}</div>
-                                                <a style="font-size: 18px; color: rgb(4, 4, 245);" 
-                                                href="{{ url_for('edit_rec', film_title=film.title, book=rec.book ) }}">Edit</a>
                                             </div>   
                                         {% else %}
                                             <div class="col l4" style="padding-bottom: 5px; border: black 1px solid; 
@@ -139,7 +139,7 @@
                         </div>
                         <div id="profile-button-box" class="col l10" style="padding-top: 10px;">
                             <div id="{{ film.title }}_rec-btns">
-                                {% if session.user|lower == "admin"|lower %}
+                                {% if (session.user|lower == "admin"|lower or session.user|lower == film.creator|lower) %}
                                 <a href="{{ url_for('edit_film', film_title=film.title) }}">
                                     <button class="red btn darken-1">Edit</button>                                   
                                 </a>
@@ -147,7 +147,7 @@
                                 {% if session.user %}
                                 <button class="red btn darken-1" onclick='recOn("{{ film.title }}")'>Add</button>
                                 {% endif %}
-                                <a href="{{ url_for ('get_films')}}" class="red btn darken-1">Back</a>
+                                <a href="{{ url_for ('get_films')}}" class="red btn darken-1">Exit</a>
                             </div>
                         </div>     
                     </div>

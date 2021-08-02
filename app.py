@@ -40,9 +40,8 @@ def search():
         query = request.form.get("query")
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
         recs = mongo.db.rec_list.find()
-        search = True
         return render_template("get_films.html", films=films, recs=recs, 
-        search=search) 
+        search=True) 
     return get_films()
 
 
@@ -61,10 +60,12 @@ def add_film():
             "title": request.form.get("title"),
             "genre": request.form.get("genre"),
             "poster_url": request.form.get("user_poster_url"),
+            "creator": session["user"],
         }
+        title = request.form.get("title")
         mongo.db.film_list.insert_one(film)
         flash("Film Successfully Added")
-        return redirect(url_for("get_films"))
+        return redirect(url_for("get_film", film_title=title))
 
     return render_template("get_films.html")
 
@@ -76,6 +77,7 @@ def edit_film(film_title):
             "title": request.form.get("title"),
             "genre": request.form.get("genre"),
             "poster_url": request.form.get("user_poster_url"),
+            "creator": session["user"],
         }
         newTitle = request.form.get("title")
         mongo.db.film_list.update({"title": film_title}, submit)
@@ -103,6 +105,7 @@ def add_rec():
             "title": request.form.get("title"),
             "book": request.form.get("book"),
             "author": request.form.get("author"),
+            "creator": session["user"],
         }
         mongo.db.rec_list.insert_one(rec) 
         flash("Successfully Added")
@@ -123,6 +126,7 @@ def edit_rec(film_title, book):
             "title": request.form.get("title"),
             "book": request.form.get("book"),
             "author": request.form.get("author"),
+            "creator": session["user"],
         }}
         mongo.db.rec_list.update_one(filter, newvalues) 
         return render_template("get_films.html", film=film, films=films, 
@@ -161,7 +165,7 @@ def register():
         # put the new user into 'session' cookie
         session["user"] = request.form.get("username").lower()
         flash("Registration Succesful")    
-        return redirect(url_for("profile", username=session["user"]))
+        return redirect(url_for("get_films"))
     return render_template("register.html")
 
 
@@ -180,7 +184,7 @@ def login():
             request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome, {}".format(request.form.get("username")))
-                return get_films()
+                return redirect(url_for("get_films"))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
