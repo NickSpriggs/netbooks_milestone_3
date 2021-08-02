@@ -43,18 +43,17 @@
 }
 
 #profile_box {
-    margin: 173px 0px 0px 0px;
+    margin: 195px 0px 0px 0px;
     background-color: rgb(24, 23, 23);
 }
 
 #add_box {
-    margin: 173px 0px 0px 0px;
+    margin: 195px 0px 0px 0px;
     background-color: rgb(24, 23, 23);
 }
 
-
 #add_rec_box {
-    margin-top: 173px;
+    margin-top: 195px;
     margin-left: 25%;
     height: 400px;
     background-color: rgb(24, 23, 23);

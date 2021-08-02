@@ -113,17 +113,32 @@ def add_rec():
 
 @app.route("/edit_rec/<film_title>/<book>", methods=["GET", "POST"])
 def edit_rec(film_title, book):
+    film = mongo.db.film_list.find_one({"title": film_title})
+    films = mongo.db.film_list.find()
+    recs = mongo.db.rec_list.find()
+
     if request.method == "POST": 
-        recommend = {
+        filter = {'book': book, 'title': film_title}     
+        newvalues = {"$set": {
             "title": request.form.get("title"),
             "book": request.form.get("book"),
             "author": request.form.get("author"),
-        }
-        mongo.db.rec_list.update_one({"book": book}, recommend)     
-        return get_film(request.form.get("title"))
+        }}
+        mongo.db.rec_list.update_one(filter, newvalues) 
+        return render_template("get_films.html", film=film, films=films, 
+        recs=recs, overlay_profile=True)
 
+    editedRec = mongo.db.rec_list.find_one({"book": book})
+    return render_template("get_films.html", film=film, films=films, recs=recs, 
+    editedRec=editedRec, overlay_profile=True, overlay_edit_rec=True)
     # Here is where you left off...how to edit recommendations
-    return get_films()
+
+
+@app.route("/delete_rec/<film_title>/<book>")
+def delete_rec(film_title, book):
+    mongo.db.rec_list.remove({"book": book, "title": film_title})     
+    flash("Film Successfully Deleted")
+    return get_film(film_title)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -185,7 +200,7 @@ def logout():
     # remove user from the session cookies
     flash("You have been logged out")
     session.pop("user")
-    return redirect(url_for("login"))
+    return redirect(url_for("get_films"))
     
 
 if __name__ == "__main__":

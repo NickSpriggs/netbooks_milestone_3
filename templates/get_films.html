@@ -3,7 +3,7 @@
 
 <section>
     <div class="row">
-        <div       class="col l10 m12">
+        <div class="col l10 m12">
             <form action="{{ url_for('search')}}" method="post" style="padding-top: 64px;">
                 <div class="row valign-wrapper center-align fixed-search">
                     <div class="input-field col l10 m7">
@@ -121,7 +121,7 @@
                                                     <img style="height: 20px; cursor: pointer; padding-top: 4px;" onclick='amazonLink("{{ rec.book }}", "{{ rec.author }}")' src="https://nicholasspriggs.weebly.com/uploads/7/9/7/8/79787400/amazon-icon_orig.png">
                                                 </div>
                                                 <div class="recs">Author: {{ rec.author }}</div>
-                                                <a style="font-size: 18px; color: rgb(3, 3, 158);" 
+                                                <a style="font-size: 18px; color: rgb(4, 4, 245);" 
                                                 href="{{ url_for('edit_rec', film_title=film.title, book=rec.book ) }}">Edit</a>
                                             </div>   
                                         {% else %}
@@ -147,7 +147,7 @@
                                 {% if session.user %}
                                 <button class="red btn darken-1" onclick='recOn("{{ film.title }}")'>Add</button>
                                 {% endif %}
-                                <button class="red btn darken-1" onclick="off()">Back</button>
+                                <a href="{{ url_for ('get_films')}}" class="red btn darken-1">Back</a>
                             </div>
                         </div>     
                     </div>
@@ -212,7 +212,7 @@
                         </div>     
                         
                         <div class="col l10" style="padding-left: 20px">
-                            <button type="submit" onclick="checkForImg()" class="btn-large red darken-1">Save<i class="fas fa-plus-square right"></i></button>
+                            <button type="submit" onclick="checkForImg()" class="btn-large green darken-1">Save<i class="fas fa-plus-square right"></i></button>
                             <a href="{{ url_for('delete_film', film_title=film.title) }}" 
                             class="btn-large red darken-1">Delete Film</a>
                         </div>
@@ -220,35 +220,36 @@
             </div>
         {% endif %}
 
-        {% if overlay_rec_edit %} 
+        {% if overlay_edit_rec %} 
             <div id="overlay_addrecs" class="col s12" style="position: fixed; display: block; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 24px;">
                 <form id="add_rec_box" class="no-pad col s5" 
-                method="POST" action="{{ url_for('edit_rec') }}">
+                method="POST" action="{{ url_for('edit_rec', film_title=film.title, book=editedRec.book ) }}">
                     <div style="margin-top: 10px; text-align: center;">Edit Book</div>
 
-                    <input id="rec_film_title" name="title" type="text" class="validate" required style="display: none;">                
+                    <input id="rec_film_title" name="title" type="text" class="validate" value="{{film.title}}"
+                    required style="display: none;">                
 
                     <div class="input-field col l12" style="margin-top: 20px;">
                         <div id="profile-title-box" class="col l12"> 
                             Book Name: <input id="book" name="book" type="text" class="validate" 
-                            minlength="3" maxlength="50" required>
+                            minlength="3" maxlength="50" value="{{editedRec.book}}" required>
                         </div>
                     </div>
 
                     <div class="input-field col l12" style="margin-top: 0px; margin-bottom: 10px;">
                         <div id="profile-title-box" class="col l12"> 
                             Author: <input id="author" name="author" type="text" class="validate" 
-                            minlength="5" maxlength="50" required>
+                            minlength="5" maxlength="50" value="{{editedRec.author}}" required>
                         </div>
                     </div>     
                     
                     <div class="col l12" style="padding-left: 20px">                             
-                        <button type="submit" style="margin-bottom: 10px;" class="btn-large red darken-1">Save</i></button>
-                        <button onclick="recOff()" style="margin-bottom: 10px;" class="btn-large red darken-1">Back</button>
+                        <button type="submit" style="margin-bottom: 10px; margin-top: 10px;" class="btn-large green darken-1">Save</i></button>
+                        <a href="{{ url_for('delete_rec', film_title=film.title, book=editedRec.book) }}" 
+                        class="btn-large red darken-1">Delete Book</a>
                     </div>
-
                 </form>
             </div>          
         {% endif %}
@@ -293,11 +294,6 @@
     addbox = document.getElementById("add_box").innerHTML;
     addrecbox = document.getElementById("add_rec_box").innerHTML;
     url = "None";
-
-    
-    function off() {
-      document.getElementById("overlay_profile").style.display = "none";
-    }
 
     function goTo(loc) {
       window.moveTo(loc);
