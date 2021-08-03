@@ -109,7 +109,7 @@
                             background-position: center; background-size:cover;"></div>  
                         </div>
                         <div id="profile-title-box" class="col l10 m9 s8">
-                            <div style="color:rgb(255, 255, 255); float: right; cursor: pointer;" 
+                            <div style="color:rgb(184, 15, 15); float: right; cursor: pointer;" 
                             onclick="profileOff()">X</div> 
                             Title: {{ film.title }} 
                         </div>
@@ -164,7 +164,7 @@
                 <form id="add_rec_box" class="no-pad col s5" 
                 method="POST" action="{{ url_for('add_rec') }}">
                     <div style="margin-top: 10px; text-align: center;">Add Book
-                        <a style="color:rgb(255, 255, 255); float: right; padding-right: 10px; cursor: pointer;" 
+                        <a style="color:rgb(184, 15, 15); float: right; padding-right: 10px; cursor: pointer;" 
                         onclick="recOff()">X</a> 
                     </div>
 
@@ -208,7 +208,7 @@
                         </div>
 
                         <div class="input-field col l10 m9 s8" style="margin-top: 0px;">
-                                <a style="color:rgb(255, 255, 255); float: right; padding-left: 5px; cursor: pointer;" 
+                                <a style="color:rgb(184, 15, 15); float: right; padding-left: 5px; cursor: pointer;" 
                                 onclick="editFilmOff()">X</a> 
                                 Title: 
                                 <input id="title" name="title" type="text" class="validate" 
@@ -237,7 +237,7 @@
                 <form id="add_rec_box" class="no-pad col s5" 
                 method="POST" action="{{ url_for('edit_rec', film_title=film.title, book=editedRec.book ) }}">
                     <div style="margin-top: 10px; text-align: center;">Edit Book
-                        <a style="color:rgb(255, 255, 255); float: right; padding-right: 10px; cursor: pointer;" 
+                        <a style="color:rgb(184, 15, 15); float: right; padding-right: 10px; cursor: pointer;" 
                         onclick="editRecOff()">X</a> 
                     </div>
 
@@ -277,7 +277,7 @@
                     </div>
 
                     <div class="input-field col l10 m9 s8" style="margin-top: 10px;">
-                        <a style="color:rgb(255, 255, 255); float: right; padding-left: 5px; cursor: pointer;" 
+                        <a style="color:rgb(184, 15, 15); float: right; padding-left: 5px; cursor: pointer;" 
                         onclick="addOff()">X</a> 
                         Title: <input id="title" name="title" type="text" class="validate" 
                         minlength="5" maxlength="50" required>
