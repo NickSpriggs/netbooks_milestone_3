@@ -86,8 +86,9 @@ def edit_film(film_title):
 
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find()
-    return render_template("get_films.html", film=film, films=films, 
-    overlay_edit=True)
+    recs = mongo.db.rec_list.find()
+    return render_template("get_films.html", film=film, films=films, recs=recs,
+    overlay_edit=True, overlay_profile=True)
 
 
 @app.route("/delete_film/<film_title>")
@@ -204,7 +205,7 @@ def logout():
     # remove user from the session cookies
     flash("You have been logged out")
     session.pop("user")
-    return redirect(url_for("get_films"))
+    return get_films()
     
 
 if __name__ == "__main__":
