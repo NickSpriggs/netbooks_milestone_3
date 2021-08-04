@@ -5,6 +5,7 @@ from flask import (
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 if os.path.exists("env.py"):
     import env
 
@@ -21,7 +22,7 @@ mongo = PyMongo(app)
 @app.route("/")
 @app.route("/get_films")
 def get_films():
-    films = mongo.db.film_list.find()
+    films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find()
     return render_template("get_films.html", films=films, recs=recs)
 
@@ -29,7 +30,7 @@ def get_films():
 @app.route("/get_film/<film_title>")
 def get_film(film_title):
     film = mongo.db.film_list.find_one({"title": film_title})
-    films = mongo.db.film_list.find()
+    films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find()
     return render_template("get_films.html", film=film, films=films, recs=recs, overlay_profile=True)
 
@@ -61,6 +62,7 @@ def add_film():
             "genre": request.form.get("genre"),
             "poster_url": request.form.get("user_poster_url"),
             "creator": session["user"],
+            "date": datetime.datetime.now(),
         }
         title = request.form.get("title")
         mongo.db.film_list.insert_one(film)
@@ -78,6 +80,7 @@ def edit_film(film_title):
             "genre": request.form.get("genre"),
             "poster_url": request.form.get("user_poster_url"),
             "creator": session["user"],
+            "date": datetime.datetime.now(),
         }
         newTitle = request.form.get("title")
         mongo.db.film_list.update({"title": film_title}, submit)
@@ -85,7 +88,7 @@ def edit_film(film_title):
         return get_film(newTitle)
 
     film = mongo.db.film_list.find_one({"title": film_title})
-    films = mongo.db.film_list.find()
+    films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find()
     return render_template("get_films.html", film=film, films=films, recs=recs,
     overlay_edit=True, overlay_profile=True)
@@ -118,7 +121,7 @@ def add_rec():
 @app.route("/edit_rec/<film_title>/<book>", methods=["GET", "POST"])
 def edit_rec(film_title, book):
     film = mongo.db.film_list.find_one({"title": film_title})
-    films = mongo.db.film_list.find()
+    films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find()
 
     if request.method == "POST": 

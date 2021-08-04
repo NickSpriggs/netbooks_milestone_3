@@ -29,6 +29,20 @@
     padding: 0px;
 }
 
+.exit {
+    color: white;
+    float: right;
+    cursor: pointer;
+    width: 40px;
+    text-align: center;
+    background-color: rgb(184, 15, 15);
+}
+
+.exit:hover {
+    color: rgb(184, 15, 15);
+    background-color: white;
+}
+
 .poster-img {
     padding-top: 55%; 
     text-align: center;
@@ -38,8 +52,15 @@
 
 .poster-img:hover {
     color: white;
-    border: 1px solid red;
+    border: 1.2px solid red;
     text-shadow: black 1px 1px;
+}
+
+.profile-poster {
+    padding-top: 55%; 
+    text-align: center;
+    font-size: 28px;
+    color: rgba(197, 125, 125, 0);
 }
 
 #profile_box {

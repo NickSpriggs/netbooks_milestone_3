@@ -25,7 +25,7 @@
             <div id="film-poster-section">
 
                 {% if session.user %}
-                <div class="poster col l2 m3 s4" onclick="addOn()">
+                <div class="poster col l2 m3 s4" onclick="addOn()" style="cursor: pointer;">
                     <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
                 </div>
                 {% endif %}
@@ -108,9 +108,8 @@
                             <div id="profile-poster" style="height: 300px; background-image: url({{film.poster_url}});
                             background-position: center; background-size:cover;"></div>  
                         </div>
-                        <div id="profile-title-box" class="col l10 m9 s8">
-                            <div style="color:rgb(184, 15, 15); float: right; cursor: pointer;" 
-                            onclick="profileOff()">X</div> 
+                        <div id="profile-title-box" class="col l10 m9 s8" style="padding-right: 0px;">
+                            <div class="exit" onclick="profileOff()">X</div> 
                             Title: {{ film.title }} 
                         </div>
                         <div id="profile-genre-box" class="col l10 m9 s8">Genre: {{ film.genre }}</div>
@@ -163,9 +162,9 @@
             color: white; font-size: 24px;">
                 <form id="add_rec_box" class="no-pad col s5" 
                 method="POST" action="{{ url_for('add_rec') }}">
-                    <div style="margin-top: 10px; text-align: center;">Add Book
-                        <a style="color:rgb(184, 15, 15); float: right; padding-right: 10px; cursor: pointer;" 
-                        onclick="recOff()">X</a> 
+                    <div style="text-align: center;">
+                        <a class="exit" onclick="recOff()">X</a> 
+                        <div style="padding-top: 10px; text-align: center;">Add Book</div>                        
                     </div>
 
                     <input id="rec_film_title" name="title" type="text" class="validate" required style="display: none;">                
@@ -207,8 +206,8 @@
                             minlength="5" maxlength="50" required style="display: none;">                
                         </div>
 
-                        <div class="input-field col l10 m9 s8" style="margin-top: 0px;">
-                                <a style="color:rgb(184, 15, 15); float: right; padding-left: 5px; cursor: pointer;" 
+                        <div class="input-field col l10 m9 s8" style="margin-top: 0px; padding-right: 0px;">
+                                <a class="exit" 
                                 onclick="editFilmOff()">X</a> 
                                 Title: 
                                 <input id="title" name="title" type="text" class="validate" 
@@ -236,9 +235,9 @@
             color: white; font-size: 24px;">
                 <form id="add_rec_box" class="no-pad col s5" 
                 method="POST" action="{{ url_for('edit_rec', film_title=film.title, book=editedRec.book ) }}">
-                    <div style="margin-top: 10px; text-align: center;">Edit Book
-                        <a style="color:rgb(184, 15, 15); float: right; padding-right: 10px; cursor: pointer;" 
-                        onclick="editRecOff()">X</a> 
+                    <div style="text-align: center;">
+                        <a class="exit" onclick="editRecOff()">X</a> 
+                        <div style="padding-top: 10px; text-align: center;">Edit Book</div>                        
                     </div>
 
                     <input id="rec_film_title" name="title" type="text" class="validate" value="{{film.title}}"
@@ -276,8 +275,8 @@
                         <input id="user_poster_url" name="user_poster_url" type="text" class="validate" minlength="5" maxlength="50" required style="display: none;">                
                     </div>
 
-                    <div class="input-field col l10 m9 s8" style="margin-top: 10px;">
-                        <a style="color:rgb(184, 15, 15); float: right; padding-left: 5px; cursor: pointer;" 
+                    <div class="input-field col l10 m9 s8" style="margin-top: 0px; padding-right: 0px;">
+                        <a class="exit" 
                         onclick="addOff()">X</a> 
                         Title: <input id="title" name="title" type="text" class="validate" 
                         minlength="5" maxlength="50" required>
