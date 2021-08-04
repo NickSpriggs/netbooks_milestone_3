@@ -133,7 +133,8 @@ a div:hover {
 @media only screen and (max-width: 600px) {
 
 .fixed-search {
-    top: 65px;
+    height: 117px;
+    top: 55px;
     }
 }
 
