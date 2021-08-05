@@ -35,7 +35,9 @@
                     <a href="{{ url_for('get_film', film_title=film.title) }}">              
                         <div class="poster col l2 m3 s4" style="background-image: url({{film.poster_url}});
                             background-position: center; background-size: cover;">
-                            <div class="poster-img" style="height: 100%;">
+                            <div class="poster-img" style="background-image: url({{film.poster_url}}); 
+                            height: 100%; background-position: center; background-size:contain; 
+                            background-repeat: no-repeat;">
                                 {{ film.title }}
                             </div> 
                         </div>
@@ -296,6 +298,9 @@
 </section>
 
 <script>
+
+    addbox = document.getElementById("add_box").innerHTML;
+    addrecbox = document.getElementById("add_rec_box").innerHTML;
     url = "None";
 
     function goTo(loc) {

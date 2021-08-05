@@ -23,7 +23,7 @@ mongo = PyMongo(app)
 @app.route("/get_films")
 def get_films():
     films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find()
+    recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template("get_films.html", films=films, recs=recs)
 
 
@@ -31,7 +31,7 @@ def get_films():
 def get_film(film_title):
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find()
+    recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template("get_films.html", film=film, films=films, recs=recs, overlay_profile=True)
 
 
@@ -40,7 +40,7 @@ def search():
     if request.method == "POST":
         query = request.form.get("query")
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
-        recs = mongo.db.rec_list.find()
+        recs = mongo.db.rec_list.find().sort("date", -1)
         return render_template("get_films.html", films=films, recs=recs, 
         search=True) 
     return get_films()
@@ -49,7 +49,7 @@ def search():
 @app.route("/genre_search/<genre>")
 def genre_search(genre):
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
-    recs = mongo.db.rec_list.find()
+    recs = mongo.db.rec_list.find().sort("date", -1)
     search = True
     return render_template("get_films.html", films=films, search=search, recs=recs)
 
@@ -89,7 +89,7 @@ def edit_film(film_title):
 
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find()
+    recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template("get_films.html", film=film, films=films, recs=recs,
     overlay_edit=True, overlay_profile=True)
 
@@ -110,6 +110,7 @@ def add_rec():
             "book": request.form.get("book"),
             "author": request.form.get("author"),
             "creator": session["user"],
+            "date": datetime.datetime.now(),
         }
         mongo.db.rec_list.insert_one(rec) 
         flash("Successfully Added")
@@ -122,7 +123,7 @@ def add_rec():
 def edit_rec(film_title, book):
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find()
+    recs = mongo.db.rec_list.find().sort("date", -1)
 
     if request.method == "POST": 
         filter = {'book': book, 'title': film_title}     
@@ -131,6 +132,7 @@ def edit_rec(film_title, book):
             "book": request.form.get("book"),
             "author": request.form.get("author"),
             "creator": session["user"],
+            "date": datetime.datetime.now()
         }}
         mongo.db.rec_list.update_one(filter, newvalues) 
         return render_template("get_films.html", film=film, films=films, 
@@ -158,7 +160,7 @@ def register():
         
         if existing_user:
             flash("Username already exists")
-            return redirect(url_for('register'))
+            return render_template("register.html", fail=True)
         
         register = {
             "username": request.form.get("username").lower(),

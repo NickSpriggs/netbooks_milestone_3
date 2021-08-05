@@ -7,7 +7,11 @@
     <form class="col s12 m8 offset-m2" method="POST" action="{{ url_for('register') }}">
       <div class="card-panel" style="margin-top: 80px;">
         <div class="row">
+            {% if fail %}
+            <div class="red darken" style="font-size: 50px; text-align: center;">Failed: Username Taken</div>
+            {% else %}
             <div style="font-size: 50px; text-align: center;">Register</div>
+            {% endif %}
             <div class="input-field col s12">
                 <!-- i is the icon and "fas fa-user-plus" is the icon name, everything else is for color of icon-->
                 <i class="fas fa-user-plus prefix red-text text-darken-4"></i>
