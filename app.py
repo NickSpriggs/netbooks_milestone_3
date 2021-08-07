@@ -19,9 +19,15 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 # This is the instance of our Flask app using pyMongo
 
+searching = False
+searchQuery = ""
+
 @app.route("/")
 @app.route("/get_films")
 def get_films():
+    global searching
+    searching = False
+
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template("get_films.html", films=films, recs=recs)
@@ -29,29 +35,50 @@ def get_films():
 
 @app.route("/get_film/<film_title>")
 def get_film(film_title):
-    film = mongo.db.film_list.find_one({"title": film_title})
+    global searching
+    global searchQuery
+
     films = mongo.db.film_list.find().sort("date", -1)
+    film = mongo.db.film_list.find_one({"title": film_title})
     recs = mongo.db.rec_list.find().sort("date", -1)
+
+    if searching:
+        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+        return render_template("get_films.html", film=film, films=films, search=searching,
+        recs=recs, overlay_profile=True)
+
     return render_template("get_films.html", film=film, films=films, recs=recs, overlay_profile=True)
 
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    global searching
+    global searchQuery
+    
+    searching = True
+
     if request.method == "POST":
         query = request.form.get("query")
+        searchQuery = query
+
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
         recs = mongo.db.rec_list.find().sort("date", -1)
         return render_template("get_films.html", films=films, recs=recs, 
-        search=True) 
+        search=searching) 
     return get_films()
 
 
 @app.route("/genre_search/<genre>")
 def genre_search(genre):
+    global searching
+    global searchQuery
+
+    searching = True
+    searchQuery = genre
+
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
     recs = mongo.db.rec_list.find().sort("date", -1)
-    search = True
-    return render_template("get_films.html", films=films, search=search, recs=recs)
+    return render_template("get_films.html", films=films, search=searching, recs=recs)
 
 
 @app.route("/add_film", methods=["GET", "POST"])
@@ -74,6 +101,12 @@ def add_film():
 
 @app.route("/edit_film/<film_title>", methods=["GET", "POST"])
 def edit_film(film_title):
+    global searching
+    global searchQuery
+    film = mongo.db.film_list.find_one({"title": film_title})
+    films = mongo.db.film_list.find().sort("date", -1)
+    recs = mongo.db.rec_list.find().sort("date", -1)
+
     if request.method == "POST": 
         submit = {
             "title": request.form.get("title"),
@@ -86,20 +119,28 @@ def edit_film(film_title):
         mongo.db.film_list.update({"title": film_title}, submit)
         mongo.db.rec_list.update_many({"title": film_title}, {"$set": {"title": newTitle}})     
         return get_film(newTitle)
+        
+    if searching:
+        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
-    film = mongo.db.film_list.find_one({"title": film_title})
-    films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template("get_films.html", film=film, films=films, recs=recs,
-    overlay_edit=True, overlay_profile=True)
+    overlay_edit=True, overlay_profile=True, search=searching)
 
 
 @app.route("/delete_film/<film_title>")
 def delete_film(film_title):
+    global searching
     mongo.db.film_list.remove({"title": film_title})
     mongo.db.rec_list.remove({"title": film_title})     
-    flash("Film Successfully Deleted")
-    return redirect(url_for("get_films"))
+
+    films = mongo.db.film_list.find().sort("date", -1)
+    recs = mongo.db.rec_list.find().sort("date", -1)
+
+    if searching:
+        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+
+    return render_template("get_films.html", films=films, search=searching,
+    recs=recs)
 
 
 @app.route("/add_rec", methods=["GET", "POST"])
@@ -121,9 +162,13 @@ def add_rec():
 
 @app.route("/edit_rec/<film_title>/<book>", methods=["GET", "POST"])
 def edit_rec(film_title, book):
+    global searching
+    global searchQuery
+
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
+    editedRec = mongo.db.rec_list.find_one({"book": book})
 
     if request.method == "POST": 
         filter = {'book': book, 'title': film_title}     
@@ -134,14 +179,20 @@ def edit_rec(film_title, book):
             "creator": session["user"],
             "date": datetime.datetime.now()
         }}
-        mongo.db.rec_list.update_one(filter, newvalues) 
-        return render_template("get_films.html", film=film, films=films, 
-        recs=recs, overlay_profile=True)
+        mongo.db.rec_list.update_one(filter, newvalues)
 
-    editedRec = mongo.db.rec_list.find_one({"book": book})
+        if searching:
+            films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+
+        return render_template("get_films.html", film=film, films=films, 
+        recs=recs, overlay_profile=True, search=searching)
+
+    if searching:
+        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+
     return render_template("get_films.html", film=film, films=films, recs=recs, 
-    editedRec=editedRec, overlay_profile=True, overlay_edit_rec=True)
-    # Here is where you left off...how to edit recommendations
+    editedRec=editedRec, overlay_profile=True, overlay_edit_rec=True, 
+    search=searching)
 
 
 @app.route("/delete_rec/<film_title>/<book>")
