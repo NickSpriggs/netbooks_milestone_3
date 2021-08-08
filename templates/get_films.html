@@ -7,16 +7,21 @@
             <form action="{{ url_for('search')}}" method="post" style="padding-top: 64px;">
                 <div class="row valign-wrapper center-align fixed-search">
                     <div class="input-field col l10 m7">
-                        <i class="fas fa-search prefix red-text text-darken"></i>                            
+                        <i class="fas fa-search prefix red-text text-darken"></i>      
+                            {% if search %}  
+                            <input type="text" name="query" id="query" minlength="1" class="validate" 
+                            value="{{searchQuery}}" required>
+                            {% else %}
                             <input type="text" name="query" id="query" minlength="1" class="validate" required>
+                            {% endif %}
                             <label for="query">Search</label>
                     </div>
-                    <div class="col l2 m3">
-                        <button type="submit" class="hover-btn btn" style="margin-top: 20px;">
+                    <div class="no-pad col l2 m3">
+                        <button type="submit" class="search-btn hover-btn btn">
                             Search
                         </button>
                         {% if search %}
-                        <a href="{{ url_for('get_films')}}" class="hover-btn btn" style="margin-top: 20px;">X</a>
+                        <a href="{{ url_for('get_films')}}" class="exit-btn hover-btn btn">X</a>
                         {% endif %}                    
                     </div>
                 </div>
@@ -51,47 +56,47 @@
                 text-decoration: underline 3px; text-underline-offset: 5px;">Genres</div>
             </div>
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='action') }}">
+                <a href="{{ url_for('genre_search', genre='Action') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Action</div>
                 </a>
             </div>  
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='horror') }}">
+                <a href="{{ url_for('genre_search', genre='Horror') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Horror</div>
                 </a>
             </div> 
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='sci-fi') }}">
+                <a href="{{ url_for('genre_search', genre='Sci-Fi') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Sci-Fi</div>
                 </a>
             </div>  
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='comedy') }}">
+                <a href="{{ url_for('genre_search', genre='Comedy') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Comedy</div>
                 </a>
             </div>  
             <div class="col l12 m2">   
-                <a href="{{ url_for('genre_search', genre='sport') }}">
+                <a href="{{ url_for('genre_search', genre='Sport') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Sport</div>
                 </a>
             </div>              
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='fantasy') }}">
+                <a href="{{ url_for('genre_search', genre='Fantasy') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Fantasy</div>
                 </a>
             </div> 
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='thriller') }}">
+                <a href="{{ url_for('genre_search', genre='Thriller') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Thriller</div>
                 </a>
             </div> 
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='romance') }}">
+                <a href="{{ url_for('genre_search', genre='Romance') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Romance</div>
                 </a>
             </div>   
             <div class="col l12 m2">    
-                <a href="{{ url_for('genre_search', genre='historical') }}">
+                <a href="{{ url_for('genre_search', genre='Historical') }}">
                     <div style="padding-bottom: 5px; text-align: center;">Historical</div>
                 </a>
             </div>       

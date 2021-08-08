@@ -9,12 +9,13 @@
 }
 
 .hover-btn {
-    background-color: red;
+    background-color: rgb(184, 15, 15);
+    margin-top: 20px;
 }
 
 .hover-btn:hover {
     background-color: white;
-    color: red;
+    color: rgb(184, 15, 15);
 }
 
 .input-field {
@@ -145,6 +146,25 @@ a div:hover {
     height: 117px;
     top: 55px;
     }
+}
+
+.user-tab {
+    width: 17%;
+}
+
+@media only screen and (max-width: 451px) {
+.hover-btn {
+    height: 32px;   
+    margin-top: 0px;  
+    float: left;
+}
+
+.exit-btn {
+    margin-top: 5px;
+}
+
+.user-tab {
+    width: 75px;
 }
 
 @media only screen and (max-width: 410px) {

@@ -44,7 +44,7 @@ def get_film(film_title):
 
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
-        return render_template("get_films.html", film=film, films=films, search=searching,
+        return render_template("get_films.html", film=film, films=films, search=searching, searchQuery=searchQuery,
         recs=recs, overlay_profile=True)
 
     return render_template("get_films.html", film=film, films=films, recs=recs, overlay_profile=True)
@@ -64,7 +64,7 @@ def search():
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
         recs = mongo.db.rec_list.find().sort("date", -1)
         return render_template("get_films.html", films=films, recs=recs, 
-        search=searching) 
+        search=searching, searchQuery=searchQuery) 
     return get_films()
 
 
@@ -78,7 +78,7 @@ def genre_search(genre):
 
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
     recs = mongo.db.rec_list.find().sort("date", -1)
-    return render_template("get_films.html", films=films, search=searching, recs=recs)
+    return render_template("get_films.html", films=films, search=searching, searchQuery=searchQuery, recs=recs)
 
 
 @app.route("/add_film", methods=["GET", "POST"])
@@ -124,12 +124,13 @@ def edit_film(film_title):
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
     return render_template("get_films.html", film=film, films=films, recs=recs,
-    overlay_edit=True, overlay_profile=True, search=searching)
+    overlay_edit=True, overlay_profile=True, search=searching, searchQuery=searchQuery)
 
 
 @app.route("/delete_film/<film_title>")
 def delete_film(film_title):
     global searching
+    global searchQuery
     mongo.db.film_list.remove({"title": film_title})
     mongo.db.rec_list.remove({"title": film_title})     
 
@@ -139,7 +140,7 @@ def delete_film(film_title):
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
-    return render_template("get_films.html", films=films, search=searching,
+    return render_template("get_films.html", films=films, search=searching, searchQuery=searchQuery,
     recs=recs)
 
 
@@ -185,14 +186,14 @@ def edit_rec(film_title, book):
             films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
         return render_template("get_films.html", film=film, films=films, 
-        recs=recs, overlay_profile=True, search=searching)
+        recs=recs, overlay_profile=True, search=searching, searchQuery=searchQuery)
 
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
     return render_template("get_films.html", film=film, films=films, recs=recs, 
     editedRec=editedRec, overlay_profile=True, overlay_edit_rec=True, 
-    search=searching)
+    search=searching, searchQuery=searchQuery)
 
 
 @app.route("/delete_rec/<film_title>/<book>")
