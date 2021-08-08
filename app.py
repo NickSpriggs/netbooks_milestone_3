@@ -154,6 +154,7 @@ def add_rec():
             "creator": session["user"],
             "date": datetime.datetime.now(),
         }
+        
         mongo.db.rec_list.insert_one(rec) 
         flash("Successfully Added")
         return get_film(request.form.get("title"))
