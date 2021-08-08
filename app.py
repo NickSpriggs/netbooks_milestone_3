@@ -324,11 +324,11 @@ def login():
                 return redirect(url_for("get_films"))
             else:
                 # invalid password match
-                return redirect(url_for("login"))
+                return render_template("login.html", fail=True)
 
         else:
             # if existing_user, the username, doesn't exist
-            return redirect(url_for("login"))  
+            return render_template("login.html", fail=True)
 
     # else if method != POST just return login.html
     return render_template("login.html")

@@ -7,7 +7,12 @@
     <form class="col s12 m8 offset-m2" method="POST" action="{{ url_for('login') }}">
       <div class="card-panel" style="margin-top: 80px;">
         <div class="row">
+            {% if fail %}
+            <div class="red darken-4" style="font-size: 25px; text-align: center; color: white;">
+                Wrong Username/Password</div>
+            {% else %}
             <div style="font-size: 50px; text-align: center;">Login</div>
+            {% endif %}
             <div class="input-field col s12">
                 <!-- i is the icon and "fas fa-user-cog" is the icon name, everything else is for color of icon-->
                 <i class="fas fa-user-cog prefix red-text text-darken-4"></i>
