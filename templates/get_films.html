@@ -30,7 +30,7 @@
             <div id="film-poster-section">
 
                 {% if session.user %}
-                <div class="poster col l2 m3 s4" onclick="addOn()" style="cursor: pointer;">
+                <div class="poster col l2 m3 s4" onclick="addOn()" style="cursor: pointer; height: 300px">
                     <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
                 </div>
                 {% endif %}
@@ -106,16 +106,16 @@
             <div id="overlay_profile" class="col" style="position: fixed; display: block; width: 100%; 
                 height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
                 color: white; font-size: 24px;">
-                    <div id="profile_box" class="no-pad col l10 m10 s10">
+                    <div id="profile_box" class="no-pad col l10 m12">
                         <div class="col l2 m3 s4" style="padding: 0px;">
                             <div id="profile-poster" style="height: 300px; background-image: url({{film.poster_url}});
                             background-position: center; background-size:cover;"></div>  
                         </div>
                         <div id="profile-title-box" class="col l10 m9 s8" style="padding-right: 0px;">
-                            <div class="exit" onclick="profileOff()">X</div> 
-                            Title: {{ film.title }} 
+                            <div class="exit" onclick="profileOff()">X</div>
+                            <div style="height: 36px; overflow: auto;">Title: {{ film.title }} </div>
                         </div>
-                        <div id="profile-genre-box" class="col l10 m9 s8">Genre: {{ film.genre }}</div>
+                        <div id="profile-genre-box" class="col l10 m9 s8" style="height: 36px; overflow: auto;">Genre: {{ film.genre }}</div>
 
                         <div id="profile-rec-box" style="background-color: rgba(219, 219, 219, 0.849); 
                         height: 160px; overflow: auto;" class="no-pad col l10 m9 s8">
@@ -160,10 +160,10 @@
                         </div>     
                     </div>
             </div>
-            <div id="overlay_addrecs" class="col s12" style="position: fixed; display: none; width: 100%; 
+            <div id="overlay_addrecs" class="col" style="position: fixed; display: none; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 24px;">
-                <form id="add_rec_box" class="no-pad col s5" 
+                <form id="add_rec_box" class="no-pad col l10 m12" 
                 method="POST" action="{{ url_for('add_rec') }}">
                     <div style="text-align: center;">
                         <a class="exit" onclick="recOff()">X</a> 
@@ -172,21 +172,21 @@
 
                     <input id="rec_film_title" name="title" type="text" class="validate" required style="display: none;">                
 
-                    <div class="input-field col l12" style="margin-top: 20px;">
-                        <div id="profile-title-box" class="col l12"> 
+                    <div class="input-field col l12 s12" style="margin-top: 20px;">
+                        <div id="profile-title-box"> 
                             Book Name: <input id="book" name="book" type="text" class="validate" 
                             minlength="1" maxlength="50" required>
                         </div>
                     </div>
 
-                    <div class="input-field col l12" style="margin-top: 0px; margin-bottom: 10px;">
-                        <div id="profile-title-box" class="col l12"> 
+                    <div class="input-field col l12 s12" style="margin-top: 0px; margin-bottom: 10px;">
+                        <div id="profile-title-box"> 
                             Author: <input id="author" name="author" type="text" class="validate" 
                             minlength="5" maxlength="50" required>
                         </div>
                     </div>     
                     
-                    <div class="col l12" style="padding-left: 20px">                             
+                    <div class="col l12 s12" style="padding-left: 20px">                             
                         <button type="submit" style="margin-bottom: 10px;" class="btn-large red darken-1">Recommend</i></button>
                     </div>
 
@@ -198,7 +198,7 @@
             <div id="overlay_editfilms" class="col" style="position: fixed; display: block; width: 100%; 
                 height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
                 color: white; font-size: 24px;">
-                    <form id="add_box"  class="no-pad col l10 m10 s10" method="POST" action="{{ url_for('edit_film', 
+                    <form id="add_box"  class="no-pad col l10 m12" method="POST" action="{{ url_for('edit_film', 
                     film_title=film.title) }}">
                     
                         <div id="user_url" class="poster col l2 m3 s4" onclick="getURL()" style="height: 300px; cursor: pointer;
@@ -232,10 +232,10 @@
         {% endif %}
 
         {% if overlay_edit_rec %} 
-            <div id="overlay_editrecs" class="col s12" style="position: fixed; display: block; width: 100%; 
+            <div id="overlay_editrecs" class="col" style="position: fixed; display: block; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 24px;">
-                <form id="add_rec_box" class="no-pad col s5" 
+                <form id="add_rec_box" class="no-pad col l10 m12" 
                 method="POST" action="{{ url_for('edit_rec', film_title=film.title, book=editedRec.book ) }}">
                     <div style="text-align: center;">
                         <a class="exit" onclick="editRecOff()">X</a> 
@@ -245,21 +245,21 @@
                     <input id="rec_film_title" name="title" type="text" class="validate" value="{{film.title}}"
                     required style="display: none;">                
 
-                    <div class="input-field col l12" style="margin-top: 20px;">
-                        <div id="profile-title-box" class="col l12"> 
+                    <div class="input-field col l12 s12" style="margin-top: 20px;">
+                        <div id="profile-title-box"> 
                             Book Name: <input id="book" name="book" type="text" class="validate" 
                             minlength="1" maxlength="50" value="{{editedRec.book}}" required>
                         </div>
                     </div>
 
-                    <div class="input-field col l12" style="margin-top: 0px; margin-bottom: 10px;">
-                        <div id="profile-title-box" class="col l12"> 
+                    <div class="input-field col l12 s12" style="margin-top: 0px; margin-bottom: 10px;">
+                        <div id="profile-title-box"> 
                             Author: <input id="author" name="author" type="text" class="validate" 
                             minlength="5" maxlength="50" value="{{editedRec.author}}" required>
                         </div>
                     </div>     
                     
-                    <div class="col l12" style="padding-left: 20px">                             
+                    <div class="col l12 s12" style="padding-left: 20px">                             
                         <button type="submit" style="margin-bottom: 10px; margin-top: 10px;" class="btn-large green darken-1">Save</i></button>
                         <a href="{{ url_for('delete_rec', film_title=film.title, book=editedRec.book) }}" 
                         class="btn-large red darken-1">Delete</a>
@@ -271,7 +271,7 @@
         <div id="overlay_addfilms" class="col s12" style="position: fixed; display: none; width: 100%; 
             height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.7);
             color: white; font-size: 24px;">
-                <form id="add_box"  class="no-pad col s10" method="POST" action="{{ url_for('add_film') }}">
+                <form id="add_box"  class="no-pad col l10 m12" method="POST" action="{{ url_for('add_film') }}">
                     <div id="user_url" class="poster col l2 m3 s4" onclick="getURL()" style="height: 300px; background-position: center; background-size:cover;">
                         <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
                         <input id="user_poster_url" name="user_poster_url" type="text" class="validate" minlength="5" maxlength="50" required style="display: none;">                

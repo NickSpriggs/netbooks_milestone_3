@@ -85,8 +85,7 @@
 
 #add_rec_box {
     margin-top: 195px;
-    margin-left: 25%;
-    height: 400px;
+    height: 340px;
     background-color: rgb(24, 23, 23);
 }
 
@@ -119,6 +118,18 @@ a div:hover {
 }
 
 @media only screen and (max-width: 992px) {
+    #profile_box{
+        margin-top: 240px;
+    }
+
+    #add_box {
+        margin-top: 240px;
+    }
+
+    #add_rec_box {
+        margin-top: 240px;
+    }
+
     .fixed {
       height: 70px;
       font-size: 20px;
