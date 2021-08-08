@@ -181,7 +181,6 @@ def add_rec():
         }
         
         mongo.db.rec_list.insert_one(rec) 
-        flash("Successfully Added")
         return get_film(request.form.get("title"))
     
     # Won't be called. Only POST.
@@ -233,7 +232,6 @@ def edit_rec(film_title, book):
 @app.route("/delete_rec/<film_title>/<book>")
 def delete_rec(film_title, book):
     mongo.db.rec_list.remove({"book": book, "title": film_title})     
-    flash("Film Successfully Deleted")
     return get_film(film_title)
 
 
@@ -245,7 +243,6 @@ def register():
             {"username": request.form.get("username").lower()})
         
         if existing_user:
-            flash("Username already exists")
             return render_template("register.html", fail=True)
         
         register = {
@@ -256,7 +253,6 @@ def register():
 
         # put the new user into 'session' cookie
         session["user"] = request.form.get("username").lower()
-        flash("Registration Succesful")    
         return redirect(url_for("get_films"))
     return render_template("register.html")
 
@@ -275,16 +271,13 @@ def login():
             if check_password_hash(existing_user["password"], 
             request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
-                flash("Welcome, {}".format(request.form.get("username")))
                 return redirect(url_for("get_films"))
             else:
                 # invalid password match
-                flash("Incorrect Username and/or Password")
                 return redirect(url_for("login"))
 
         else:
             # if existing_user, the username, doesn't exist
-            flash("Incorrect Username and/or Password")    
             return redirect(url_for("login"))  
 
     # else if method != POST just return login.html
@@ -294,7 +287,6 @@ def login():
 @app.route("/logout")
 def logout():
     # remove user from the session cookies
-    flash("You have been logged out")
     session.pop("user")
     return get_films()
     

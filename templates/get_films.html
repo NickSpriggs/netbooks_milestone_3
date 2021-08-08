@@ -210,20 +210,19 @@
                         </div>
 
                         <div class="input-field col l10 m9 s8" style="margin-top: 0px; padding-right: 0px;">
-                                <a class="exit" 
-                                onclick="editFilmOff()">X</a> 
-                                Title: 
-                                <input id="title" name="title" type="text" class="validate" 
-                                minlength="1" maxlength="50" value="{{film.title}}" required>
+                            <a class="exit" onclick="editFilmOff()">X</a> 
+                            Title: <input id="title" name="title" type="text" class="validate" 
+                            minlength="1" maxlength="50" value="{{film.title}}" required>
                         </div>
 
-                        <div class="input-field col l10 m9 s8" style="margin-top: 0px; margin-bottom: 10px;">
-                                Genre(s): <input id="genre" name="genre" type="text" class="validate" 
-                                minlength="5" maxlength="50" value="{{film.genre}}" required>
+                        <div class="input-field col l10 m9 s8" style="margin-top: 0px; margin-bottom: 10px;
+                        padding-right: 0px;">
+                            Genre(s): <input id="genre" name="genre" type="text" class="validate" 
+                            minlength="5" maxlength="50" value="{{film.genre}}" required>
                         </div>     
                         
                         <div class="col l10 m9 s8" style="padding-left: 20px">
-                            <button type="submit" onclick="checkForImg(user_poster_url.value)" 
+                            <button type="submit"
                             class="btn-large green darken-1">Save</button>
                             <a href="{{ url_for('delete_film', film_title=film.title) }}" 
                             class="btn-large red darken-1">Delete Film</a>
@@ -279,15 +278,15 @@
                     </div>
 
                     <div class="input-field col l10 m9 s8" style="margin-top: 0px; padding-right: 0px;">
-                        <a class="exit" 
-                        onclick="addOff()">X</a> 
+                        <a class="exit" onclick="addOff()">X</a> 
                         Title: <input id="title" name="title" type="text" class="validate" 
                         minlength="1" maxlength="50" required>
                     </div>
 
-                    <div class="input-field col l10 m9 s8" style="margin-top: 0px; margin-bottom: 10px;">
-                            Genre(s): <input id="genre" name="genre" type="text" class="validate" 
-                            minlength="5" maxlength="50" required>
+                    <div class="input-field col l10 m9 s8" style="margin-top: 0px; margin-bottom: 10px;
+                    padding-right: 0px;">
+                        Genre(s): <input id="genre" name="genre" type="text" class="validate" 
+                        minlength="5" maxlength="50" required>
                     </div>     
                     
                     <div class="col l10" style="padding-left: 20px">
@@ -340,17 +339,18 @@
     }
 
     function getURL() {
-      var drag = prompt("Enter valid image url (Preferably ending in JPEG, JPG, or PNG):", "");
-      if (drag != null) {
-        url = "url('" + drag + "')"; 
+      var imgInput = prompt("Enter valid image url (Preferably ending in JPEG, JPG, or PNG):", "");
+      if (imgInput.length > 5) {
+        url = "url('" + imgInput + "')"; 
         document.getElementById("user_url").style.backgroundImage = url;
-        document.getElementById("user_poster_url").value = drag;
-      } 
+        document.getElementById("user_poster_url").value = imgInput;
+      } else {
+        alert("URL not valid try again")
+      }
     }
 
-    function checkForImg(url=url) {
-      num = url.length - 7
-      if (num < 5) {
+    function checkForImg() {
+      if (document.getElementById("user_poster_url").value == "") {
         getURL()
       }
     }
