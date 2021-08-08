@@ -44,10 +44,11 @@ def get_film(film_title):
 
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
-        return render_template("get_films.html", film=film, films=films, search=searching, searchQuery=searchQuery,
-        recs=recs, overlay_profile=True)
+        return render_template("get_films.html", film=film, films=films, recs=recs,
+        search=searching, searchQuery=searchQuery, overlay_profile=True)
 
-    return render_template("get_films.html", film=film, films=films, recs=recs, overlay_profile=True)
+    return render_template("get_films.html", film=film, films=films, recs=recs, 
+    search=searching, searchQuery=searchQuery, overlay_profile=True)
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -55,17 +56,18 @@ def search():
     global searching
     global searchQuery
     
-    searching = True
-
     if request.method == "POST":
         query = request.form.get("query")
+        searching = True
         searchQuery = query
 
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
         recs = mongo.db.rec_list.find().sort("date", -1)
         return render_template("get_films.html", films=films, recs=recs, 
         search=searching, searchQuery=searchQuery) 
-    return get_films()
+        
+    return render_template("get_films.html", films=films, recs=recs, 
+    search=searching, searchQuery=searchQuery) 
 
 
 @app.route("/genre_search/<genre>")
