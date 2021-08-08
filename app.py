@@ -102,7 +102,6 @@ def add_film():
         }
         title = request.form.get("title")
         mongo.db.film_list.insert_one(film)
-        flash("Film Successfully Added")
         return redirect(url_for("get_film", film_title=title))
 
     # Won't be called. Only POST.
@@ -125,6 +124,15 @@ def edit_film(film_title):
         if exists:
             return get_film(film_title)
 
+        # Check if user created film
+        userfilm = mongo.db.film_list.find_one({
+            "title": request.form.get("title"),
+            "creator": session["user"]
+        })
+        
+        filter = {'title': film_title} 
+
+        # New values for film
         submit = {
             "title": request.form.get("title"),
             "genre": request.form.get("genre"),
@@ -132,10 +140,15 @@ def edit_film(film_title):
             "creator": session["user"],
             "date": datetime.datetime.now(),
         }
-        newTitle = request.form.get("title")
-        mongo.db.film_list.update({"title": film_title}, submit)
-        mongo.db.rec_list.update_many({"title": film_title}, {"$set": {"title": newTitle}})     
-        return get_film(newTitle)
+
+        # Only update if user is creator or "admin"
+        if userfilm or session["user"] == "admin":
+            newTitle = request.form.get("title")
+            mongo.db.film_list.update(filter, submit)
+            mongo.db.rec_list.update_many(filter, {"$set": {"title": newTitle}})                 
+            return get_film(newTitle) 
+
+        return get_film(film_title)
         
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
@@ -148,8 +161,21 @@ def edit_film(film_title):
 def delete_film(film_title):
     global searching
     global searchQuery
-    mongo.db.film_list.remove({"title": film_title})
-    mongo.db.rec_list.remove({"title": film_title})     
+
+    # Deletes film only for creator
+    mongo.db.film_list.remove({
+        "title": film_title, 
+        "creator": session["user"].lower()})
+    mongo.db.rec_list.remove({
+        "title": film_title, 
+        "creator": session["user"].lower()})   
+
+    # Deletes film for admin
+    if session["user"].lower() == "admin":   
+        mongo.db.film_list.remove({
+            "title": film_title})
+        mongo.db.rec_list.remove({
+            "title": film_title})  
 
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
@@ -206,7 +232,21 @@ def edit_rec(film_title, book):
         if exists:
             return get_film(request.form.get("title"))
 
-        filter = {'book': book, 'title': film_title}     
+        # Find IF user recommended book for the film
+        filter = {
+            'book': book, 
+            'title': film_title,
+            'creator': session["user"]
+        } 
+
+        # If user is admin just find the book for film
+        if session["user"].lower() == "admin":
+            filter = {
+                'book': book, 
+                'title': film_title,
+        }  
+
+        # New values for recommendation
         newvalues = {"$set": {
             "title": request.form.get("title"),
             "book": request.form.get("book"),
@@ -214,6 +254,7 @@ def edit_rec(film_title, book):
             "creator": session["user"],
             "date": datetime.datetime.now()
         }}
+
         mongo.db.rec_list.update_one(filter, newvalues)
 
         if searching:
@@ -231,7 +272,16 @@ def edit_rec(film_title, book):
 
 @app.route("/delete_rec/<film_title>/<book>")
 def delete_rec(film_title, book):
-    mongo.db.rec_list.remove({"book": book, "title": film_title})     
+    mongo.db.rec_list.remove({
+        "book": book,
+        "title": film_title, 
+        "creator": session["user"].lower()})  
+
+    if session["user"].lower() == "admin":
+        mongo.db.rec_list.remove({
+            "book": book, 
+            "title": film_title})  
+
     return get_film(film_title)
 
 
