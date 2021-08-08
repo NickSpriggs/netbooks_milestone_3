@@ -86,6 +86,13 @@ def genre_search(genre):
 @app.route("/add_film", methods=["GET", "POST"])
 def add_film():
     if request.method == "POST":
+        # Check if film already exists
+        exists = mongo.db.film_list.find_one({
+            "title": request.form.get("title")
+            })
+        if exists:
+            return get_films()
+
         film = {
             "title": request.form.get("title"),
             "genre": request.form.get("genre"),
@@ -98,6 +105,7 @@ def add_film():
         flash("Film Successfully Added")
         return redirect(url_for("get_film", film_title=title))
 
+    # Won't be called. Only POST.
     return render_template("get_films.html")
 
 
@@ -110,6 +118,13 @@ def edit_film(film_title):
     recs = mongo.db.rec_list.find().sort("date", -1)
 
     if request.method == "POST": 
+        # Check if film already exists
+        exists = mongo.db.film_list.find_one({
+            "title": request.form.get("title")
+            })
+        if exists:
+            return get_film(film_title)
+
         submit = {
             "title": request.form.get("title"),
             "genre": request.form.get("genre"),
@@ -149,6 +164,14 @@ def delete_film(film_title):
 @app.route("/add_rec", methods=["GET", "POST"])
 def add_rec():
     if request.method == "POST":
+        # Check if rec already exists for film
+        exists = mongo.db.rec_list.find_one({
+            "title": request.form.get("title"),
+            "book": request.form.get("book")
+            })
+        if exists:
+            return get_film(request.form.get("title"))
+
         rec = {
             "title": request.form.get("title"),
             "book": request.form.get("book"),
@@ -161,6 +184,7 @@ def add_rec():
         flash("Successfully Added")
         return get_film(request.form.get("title"))
     
+    # Won't be called. Only POST.
     return get_film(request.form.get("title"))
 
 
@@ -172,9 +196,17 @@ def edit_rec(film_title, book):
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
-    editedRec = mongo.db.rec_list.find_one({"book": book})
+    editedRec = mongo.db.rec_list.find_one({"book": book, "title": film_title})
 
     if request.method == "POST": 
+        # Check if rec name already exists for film
+        exists = mongo.db.rec_list.find_one({
+            "title": request.form.get("title"),
+            "book": request.form.get("book")
+            })
+        if exists:
+            return get_film(request.form.get("title"))
+
         filter = {'book': book, 'title': film_title}     
         newvalues = {"$set": {
             "title": request.form.get("title"),
@@ -188,8 +220,7 @@ def edit_rec(film_title, book):
         if searching:
             films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
-        return render_template("get_films.html", film=film, films=films, 
-        recs=recs, overlay_profile=True, search=searching, searchQuery=searchQuery)
+        return get_film(request.form.get("title"))
 
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
