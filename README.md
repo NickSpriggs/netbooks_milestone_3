@@ -1,7 +1,7 @@
 # Milestone Back-End Project
 
 The following project was my attempt to create a book recommendation website for users based on the movies they like. 
-This project makes use of HTML, CSS, Python, and Javascript.
+This project makes use of HTML, CSS, Python, Jinja, and Javascript.
 
 [View live project](https://readflix.herokuapp.com/)
 
@@ -62,12 +62,19 @@ on their existing movie viewing habits. Specifically my goals were to:
 
 - [FontMeme](https://www.fontmeme.com/): This was used to design the logo. 
 
-- [GitHub](https://github.com/): GitHub was used to code the program.
-
 - [MongoDB](https://www.mongodb.com/): MongoDB is used to store the database. 
 
 - [Heroku](https://www.heroku.com/): Heroku was used to deploy the website.
 
+- [GitHub](https://github.com/): GitHub was used to code the program.
+    - Dependencies
+        - click==8.0.1
+        - dnspython==2.1.0
+        - Flask==2.0.1 
+        - Flask-PyMongo==2.3.0
+        - itsdangerous==2.0.1 
+        - pymongo==3.12.0
+        - Werkzeug==2.0.1
 
 
 # Testing
@@ -84,8 +91,31 @@ W3C Markup Validator, W3C CSS Validator, and JSHint were used to test the code.
 
 ## Testing User Stories
 
--  #### First Time User Goals
-X
+-   #### First Time User Goals
+
+    1. As a First Time User, I want to easily locate different films, either by title or genre. 
+        - Site landing page clear presents links to available films.
+        - Search bar is available to both registered and unregistered users, as is
+        the genre selector.
+    2. As a First Time User, I want to easily find the recommendations for the films. 
+        - Upon selection the site displays all available recommendation for the film in question.
+    3. As a First Time User, I would like the option to register for an account.  
+        - Register tab is visible in navigation bar on all pages. 
+
+-   #### Returning User Goals
+
+    1. As a Returning User, I want to be able to login to my account.
+        - Login tab is visible in navigation bar on all pages and incorrect username/passwords will alert the user
+        that a mistake has been made.
+    2. As a Returning User, I would like to add films to the site so that others might offer 
+    reading suggestions based on my preferences. 
+        - The landing page for logged-in users clearly displays and add film feature as the first of the available 
+        film selection options. 
+        - Also includes feature for user to edit or delete any films they may have made.
+    3. As a Returning User, I would like to be able to upload my own book suggestions for certain films. 
+        - Film profile offers users the oppurtunity to add their own recommendations. 
+        - Likewise includes a feature to edit/delete book recommendations.
+
 
 
 ## Further Testing
@@ -95,11 +125,11 @@ X
 - Tested on iPhone 7.
 
 # Known Bugs 
-X
+ X 
 
 
 # Deployment
-X
+ X 
 
 
 # Credits
