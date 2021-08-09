@@ -173,10 +173,6 @@ a div:hover {
     }
 }
 
-.user-tab {
-    width: 17%;
-}
-
 @media only screen and (max-width: 451px) {
 .hover-btn {
     height: 32px;   
@@ -186,10 +182,6 @@ a div:hover {
 
 .exit-btn {
     margin-top: 5px;
-}
-
-.user-tab {
-    width: 100px;
 }
 
 
@@ -225,9 +217,10 @@ a div:hover {
 .small-logo {
     padding-left: 5px ;
     margin-top: 5px;
-    height: 70%;
+    height: 65%;
     }
 .scale-l-r {
     padding-right: 30px;
-}    
+}   
+
 }}

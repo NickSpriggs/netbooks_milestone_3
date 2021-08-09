@@ -21,12 +21,13 @@
           <a href="{{ url_for('get_films')}}"><img src="https://fontmeme.com/permalink/210729/7c4f14820fc13e73ba00a7ff096daf55.png" alt="netflix-font" class="small-logo"></a>
           {% if session.user %}
           <ul class="right user-tab">          
-              <li style="float: none;">
+              <li>
                 <a class='dropdown-trigger' style="background-color: rgb(190, 10, 10); text-align: center;
+                width: 130px;
                 float: none;" data-target='dropdown1'>{{session.user|upper}}
                 </a>
               </li>           
-              <li><a id='dropdown1' class='dropdown-content' style="background-color: white; 
+              <li><a id='dropdown1' class='dropdown-content' style="background-color: white; width: 130px;
               color: red; text-align: center;" href="{{ url_for('logout') }}">LOGOUT</a></li>
           </ul>
           {% else %}
