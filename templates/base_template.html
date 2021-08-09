@@ -16,7 +16,7 @@
 </head>
 <body class="black">
     <header>
-      <nav class="dark-grey" style="position: fixed; top: 0px">
+      <nav class="dark-grey" style="position: fixed; top: 0px;">
         <div class="nav-wrapper">
           <a href="{{ url_for('get_films')}}"><img src="https://fontmeme.com/permalink/210729/7c4f14820fc13e73ba00a7ff096daf55.png" alt="netflix-font" class="small-logo"></a>
           {% if session.user %}
@@ -30,7 +30,7 @@
               color: red; text-align: center;" href="{{ url_for('logout') }}">LOGOUT</a></li>
           </ul>
           {% else %}
-          <ul class="right">
+          <ul class="right scale-l-r">
               <li><a href="{{ url_for('login') }}">Login</a></li>
               <li><a href="{{ url_for('register') }}">Register</a></li>
           </ul>

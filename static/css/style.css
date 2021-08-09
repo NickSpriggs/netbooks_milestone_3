@@ -192,6 +192,7 @@ a div:hover {
     width: 100px;
 }
 
+
 @media only screen and (max-width: 410px) {
 
 .fixed-search {
@@ -215,3 +216,18 @@ a div:hover {
     font-size: 13px;
     }
 }
+
+@media only screen and (max-width: 290px) {
+.fixed-search {
+    width: 270px;
+    }
+    
+.small-logo {
+    padding-left: 5px ;
+    margin-top: 5px;
+    height: 70%;
+    }
+.scale-l-r {
+    padding-right: 30px;
+}    
+}}
