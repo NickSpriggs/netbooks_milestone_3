@@ -33,6 +33,7 @@
     height: 300px;
     padding: 0px;
     color: rgba(189, 189, 189, 0.788);
+    background-color: rgb(26, 25, 25);
 }
 
 .col.no-pad {
@@ -175,7 +176,7 @@ a div:hover {
 
 .btn-large {
     height: 54px;
-    width: 150px;
+    width: 130px;
     line-height: 54px;
     font-size: 15px;
     padding: 0px;

@@ -22,6 +22,15 @@ searching = False
 searchQuery = ""
 
 @app.route("/")
+def index():
+    global searching
+    searching = False
+    
+    films = mongo.db.film_list.find().sort("date", -1)
+    recs = mongo.db.rec_list.find().sort("date", -1)
+    return render_template("get_films.html", films=films, recs=recs, 
+    intro=True)
+
 @app.route("/get_films")
 def get_films():
     global searching
