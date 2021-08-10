@@ -8,6 +8,7 @@
     background-color: rgb(22, 22, 22);
 }
 
+
 .hover-btn {
     background-color: rgb(184, 15, 15);
     margin-top: 20px;
@@ -32,7 +33,6 @@
     height: 300px;
     padding: 0px;
     color: rgba(189, 189, 189, 0.788);
-    background-color: rgba(156, 148, 148, 0.11);
 }
 
 .col.no-pad {
@@ -224,7 +224,7 @@ a div:hover {
     
 .small-logo {
     padding-left: 5px ;
-    margin-top: 5px;
+    margin-top: 8px;
     height: 65%;
     }
 .scale-l-r {
