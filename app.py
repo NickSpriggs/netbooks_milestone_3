@@ -23,9 +23,12 @@ searchQuery = ""
 
 @app.route("/")
 def index():
-    global searching
-    searching = False
-    
+    """
+    This will create the basic landing page. Along with presenting
+    the most recent films edited in the database it will also
+    provide the user with a brief overview of the sites function.
+    """
+
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template("get_films.html", films=films, recs=recs, 
@@ -33,6 +36,11 @@ def index():
 
 @app.route("/get_films")
 def get_films():
+    """
+    This will produce all the films in the database in the order of most
+    recently added.
+    """
+
     global searching
     searching = False
 
@@ -43,6 +51,12 @@ def get_films():
 
 @app.route("/get_film/<film_title>")
 def get_film(film_title):
+    """
+    This will return the home page with the selected film profile's
+    overlay active. Additionally, it needs all the book recommendations
+    for the relevant film.
+    """
+
     global searching
     global searchQuery
 
@@ -61,6 +75,10 @@ def get_film(film_title):
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    """
+    This searches the database for whatever term the user input and returns
+    all the films that meet the query's specifications.
+    """
     global searching
     global searchQuery
     
@@ -80,6 +98,12 @@ def search():
 
 @app.route("/genre_search/<genre>")
 def genre_search(genre):
+    """
+    This search function query's the database by film genre. I'm
+    still having trouble getting it to focus on just the genre text
+    in the film DB so at the moment both search() and genre_search()
+    query a shared text index made of both film titles and genres.
+    """
     global searching
     global searchQuery
 
@@ -88,11 +112,18 @@ def genre_search(genre):
 
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
     recs = mongo.db.rec_list.find().sort("date", -1)
-    return render_template("get_films.html", films=films, search=searching, searchQuery=searchQuery, recs=recs)
+    return render_template("get_films.html", films=films, search=searching, 
+    searchQuery=searchQuery, recs=recs)
 
 
 @app.route("/add_film", methods=["GET", "POST"])
 def add_film():
+    """
+    This function takes the POSTed information from the user, identifies if
+    the film already exists in the database and, if not, adds the film to the
+    database and returns the get_film() page for the new film so the user
+    might add books to it's profile. 
+    """
     if request.method == "POST":
         # Check if film already exists
         exists = mongo.db.film_list.find_one({
@@ -118,6 +149,12 @@ def add_film():
 
 @app.route("/edit_film/<film_title>", methods=["GET", "POST"])
 def edit_film(film_title):
+    """
+    Similar to add_film this function checks if the film input already exists
+    in the database before allowing the user to make updates to it. However,
+    this one also checks if the user is either the film's creator or admin
+    before allowing them to perform any updates.
+    """
     global searching
     global searchQuery
     film = mongo.db.film_list.find_one({"title": film_title})
@@ -167,6 +204,12 @@ def edit_film(film_title):
 
 @app.route("/delete_film/<film_title>")
 def delete_film(film_title):
+    """
+    Finds the input film in the film database, as well as all
+    recommendations related to it in the recommendation database.
+    The function then deletes them if the user is the admin or the
+    film profile's creator.
+    """
     global searching
     global searchQuery
 
@@ -191,12 +234,17 @@ def delete_film(film_title):
     if searching:
         films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
 
-    return render_template("get_films.html", films=films, search=searching, searchQuery=searchQuery,
-    recs=recs)
+    return render_template("get_films.html", films=films, search=searching, 
+    searchQuery=searchQuery, recs=recs)
 
 
 @app.route("/add_rec", methods=["GET", "POST"])
 def add_rec():
+    """
+    Similiar to add_film() this function identifies if the recommendation
+    already exists in the database and, if not, creates it and returns the
+    get_film() page with the new recommendation as the first in the list. 
+    """
     if request.method == "POST":
         # Check if rec already exists for film
         exists = mongo.db.rec_list.find_one({
@@ -223,6 +271,11 @@ def add_rec():
 
 @app.route("/edit_rec/<film_title>/<book>", methods=["GET", "POST"])
 def edit_rec(film_title, book):
+    """
+    Like edit_film this function also checks if the user is either the
+    recommendation's creator or admin before allowing them to perform any
+    updates on the recommendation database.
+    """
     global searching
     global searchQuery
 
@@ -280,6 +333,12 @@ def edit_rec(film_title, book):
 
 @app.route("/delete_rec/<film_title>/<book>")
 def delete_rec(film_title, book):
+    """
+    Finds the input recommendation in the corresponding database
+    and makes sure it's specifically the one related to the film 
+    in question. Like delete_film() The function then deletes it 
+    if the user is the admin or the recommendation's creator.
+    """
     mongo.db.rec_list.remove({
         "book": book,
         "title": film_title, 
@@ -295,6 +354,14 @@ def delete_rec(film_title, book):
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    """
+    Creates user account in the user database
+    as long as username isn't already taken. Once
+    finishes it logins in the user and directs them
+    to the get_films() page. If the user fails it
+    returns them to the register screen and alerts them
+    of the issue.
+    """
     if request.method == "POST":
         # check if username from form already exists in database
         existing_user = mongo.db.readflix_users.find_one(
@@ -317,6 +384,13 @@ def register():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    """
+    Creates a session for the user if the
+    information they posted corresponds to
+    that of a user in the user database. If not
+    it redirects them to the login page with
+    an error message.
+    """
     if request.method == "POST":
         # check if username input in login.html exists in db
         existing_user = mongo.db.readflix_users.find_one(
@@ -344,6 +418,10 @@ def login():
 
 @app.route("/logout")
 def logout():
+    """
+    Logs the user out by ending the session
+    and returns them to the home page.
+    """
     # remove user from the session cookies
     session.pop("user")
        
