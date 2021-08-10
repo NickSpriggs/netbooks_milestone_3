@@ -1,6 +1,6 @@
 import os
 from flask import (
-    Flask, render_template, 
+    Flask, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,6 +21,7 @@ mongo = PyMongo(app)
 searching = False
 searchQuery = ""
 
+
 @app.route("/")
 def index():
     """
@@ -31,8 +32,9 @@ def index():
 
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
-    return render_template("get_films.html", films=films, recs=recs, 
-    intro=True)
+    return render_template(
+        "get_films.html", films=films, recs=recs, intro=True)
+
 
 @app.route("/get_films")
 def get_films():
@@ -65,12 +67,15 @@ def get_film(film_title):
     recs = mongo.db.rec_list.find().sort("date", -1)
 
     if searching:
-        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
-        return render_template("get_films.html", film=film, films=films, recs=recs,
-        search=searching, searchQuery=searchQuery, overlay_profile=True)
+        films = list(mongo.db.film_list.find({"$text": {
+            "$search": searchQuery}}))
+        return render_template(
+            "get_films.html", film=film, films=films, recs=recs,
+            search=searching, searchQuery=searchQuery, overlay_profile=True)
 
-    return render_template("get_films.html", film=film, films=films, recs=recs, 
-    search=searching, searchQuery=searchQuery, overlay_profile=True)
+    return render_template(
+        "get_films.html", film=film, films=films, recs=recs, search=searching,
+        searchQuery=searchQuery, overlay_profile=True)
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -81,7 +86,7 @@ def search():
     """
     global searching
     global searchQuery
-    
+
     if request.method == "POST":
         query = request.form.get("query")
         searching = True
@@ -89,11 +94,13 @@ def search():
 
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
         recs = mongo.db.rec_list.find().sort("date", -1)
-        return render_template("get_films.html", films=films, recs=recs, 
-        search=searching, searchQuery=searchQuery) 
-        
-    return render_template("get_films.html", films=films, recs=recs, 
-    search=searching, searchQuery=searchQuery) 
+        return render_template(
+            "get_films.html", films=films, recs=recs, search=searching,
+            searchQuery=searchQuery)
+
+    return render_template(
+        "get_films.html", films=films, recs=recs, search=searching,
+        searchQuery=searchQuery)
 
 
 @app.route("/genre_search/<genre>")
@@ -112,8 +119,9 @@ def genre_search(genre):
 
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
     recs = mongo.db.rec_list.find().sort("date", -1)
-    return render_template("get_films.html", films=films, search=searching, 
-    searchQuery=searchQuery, recs=recs)
+    return render_template(
+        "get_films.html", films=films, search=searching,
+        searchQuery=searchQuery, recs=recs)
 
 
 @app.route("/add_film", methods=["GET", "POST"])
@@ -122,7 +130,7 @@ def add_film():
     This function takes the POSTed information from the user, identifies if
     the film already exists in the database and, if not, adds the film to the
     database and returns the get_film() page for the new film so the user
-    might add books to it's profile. 
+    might add books to it's profile.
     """
     if request.method == "POST":
         # Check if film already exists
@@ -161,7 +169,7 @@ def edit_film(film_title):
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
 
-    if request.method == "POST": 
+    if request.method == "POST":
         # Check if film already exists
         exists = mongo.db.film_list.find_one({
             "title": request.form.get("title")
@@ -174,8 +182,8 @@ def edit_film(film_title):
             "title": request.form.get("title"),
             "creator": session["user"]
         })
-        
-        filter = {'title': film_title} 
+
+        filter = {'title': film_title}
 
         # New values for film
         submit = {
@@ -190,16 +198,18 @@ def edit_film(film_title):
         if userfilm or session["user"] == "admin":
             newTitle = request.form.get("title")
             mongo.db.film_list.update(filter, submit)
-            mongo.db.rec_list.update_many(filter, {"$set": {"title": newTitle}})                 
-            return get_film(newTitle) 
+            mongo.db.rec_list.update_many(filter, {"$set": {
+                "title": newTitle}})
+            return get_film(newTitle)
 
         return get_film(film_title)
-        
     if searching:
-        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+        films = list(mongo.db.film_list.find({"$text": {
+            "$search": searchQuery}}))
 
-    return render_template("get_films.html", film=film, films=films, recs=recs,
-    overlay_edit=True, overlay_profile=True, search=searching, searchQuery=searchQuery)
+    return render_template(
+        "get_films.html", film=film, films=films, recs=recs, overlay_edit=True,
+        overlay_profile=True, search=searching, searchQuery=searchQuery)
 
 
 @app.route("/delete_film/<film_title>")
@@ -215,27 +225,29 @@ def delete_film(film_title):
 
     # Deletes film only for creator
     mongo.db.film_list.remove({
-        "title": film_title, 
+        "title": film_title,
         "creator": session["user"].lower()})
     mongo.db.rec_list.remove({
-        "title": film_title, 
-        "creator": session["user"].lower()})   
+        "title": film_title,
+        "creator": session["user"].lower()})
 
     # Deletes film for admin
-    if session["user"].lower() == "admin":   
+    if session["user"].lower() == "admin":
         mongo.db.film_list.remove({
             "title": film_title})
         mongo.db.rec_list.remove({
-            "title": film_title})  
+            "title": film_title})
 
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
 
     if searching:
-        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+        films = list(mongo.db.film_list.find({"$text": {
+            "$search": searchQuery}}))
 
-    return render_template("get_films.html", films=films, search=searching, 
-    searchQuery=searchQuery, recs=recs)
+    return render_template(
+        "get_films.html", films=films, search=searching,
+        searchQuery=searchQuery, recs=recs)
 
 
 @app.route("/add_rec", methods=["GET", "POST"])
@@ -243,7 +255,7 @@ def add_rec():
     """
     Similiar to add_film() this function identifies if the recommendation
     already exists in the database and, if not, creates it and returns the
-    get_film() page with the new recommendation as the first in the list. 
+    get_film() page with the new recommendation as the first in the list.
     """
     if request.method == "POST":
         # Check if rec already exists for film
@@ -261,10 +273,10 @@ def add_rec():
             "creator": session["user"],
             "date": datetime.datetime.now(),
         }
-        
-        mongo.db.rec_list.insert_one(rec) 
+
+        mongo.db.rec_list.insert_one(rec)
         return get_film(request.form.get("title"))
-    
+
     # Won't be called. Only POST.
     return get_film(request.form.get("title"))
 
@@ -284,7 +296,7 @@ def edit_rec(film_title, book):
     recs = mongo.db.rec_list.find().sort("date", -1)
     editedRec = mongo.db.rec_list.find_one({"book": book, "title": film_title})
 
-    if request.method == "POST": 
+    if request.method == "POST":
         # Check if rec name already exists for film
         exists = mongo.db.rec_list.find_one({
             "title": request.form.get("title"),
@@ -295,17 +307,17 @@ def edit_rec(film_title, book):
 
         # Find IF user recommended book for the film
         filter = {
-            'book': book, 
+            'book': book,
             'title': film_title,
             'creator': session["user"]
-        } 
+        }
 
         # If user is admin just find the book for film
         if session["user"].lower() == "admin":
             filter = {
-                'book': book, 
+                'book': book,
                 'title': film_title,
-        }  
+            }
 
         # New values for recommendation
         newvalues = {"$set": {
@@ -319,35 +331,38 @@ def edit_rec(film_title, book):
         mongo.db.rec_list.update_one(filter, newvalues)
 
         if searching:
-            films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+            films = list(mongo.db.film_list.find({"$text": {
+                "$search": searchQuery}}))
 
         return get_film(request.form.get("title"))
 
     if searching:
-        films = list(mongo.db.film_list.find({"$text": {"$search": searchQuery}}))
+        films = list(mongo.db.film_list.find({"$text": {
+            "$search": searchQuery}}))
 
-    return render_template("get_films.html", film=film, films=films, recs=recs, 
-    editedRec=editedRec, overlay_profile=True, overlay_edit_rec=True, 
-    search=searching, searchQuery=searchQuery)
+    return render_template(
+        "get_films.html", film=film, films=films, recs=recs,
+        editedRec=editedRec, overlay_profile=True,
+        overlay_edit_rec=True, search=searching, searchQuery=searchQuery)
 
 
 @app.route("/delete_rec/<film_title>/<book>")
 def delete_rec(film_title, book):
     """
     Finds the input recommendation in the corresponding database
-    and makes sure it's specifically the one related to the film 
-    in question. Like delete_film() The function then deletes it 
+    and makes sure it's specifically the one related to the film
+    in question. Like delete_film() The function then deletes it
     if the user is the admin or the recommendation's creator.
     """
     mongo.db.rec_list.remove({
         "book": book,
-        "title": film_title, 
-        "creator": session["user"].lower()})  
+        "title": film_title,
+        "creator": session["user"].lower()})
 
     if session["user"].lower() == "admin":
         mongo.db.rec_list.remove({
-            "book": book, 
-            "title": film_title})  
+            "book": book,
+            "title": film_title})
 
     return get_film(film_title)
 
@@ -366,10 +381,10 @@ def register():
         # check if username from form already exists in database
         existing_user = mongo.db.readflix_users.find_one(
             {"username": request.form.get("username").lower()})
-        
+
         if existing_user:
             return render_template("register.html", fail=True)
-        
+
         register = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
@@ -395,13 +410,13 @@ def login():
         # check if username input in login.html exists in db
         existing_user = mongo.db.readflix_users.find_one(
             {"username": request.form.get("username").lower()})
-        
+
         if existing_user:
-        # if existing_user (the username) exists in database
+            # if existing_user (the username) exists in database
 
             # ensure hashed password matches user input
-            if check_password_hash(existing_user["password"], 
-            request.form.get("password")):
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
                 return redirect(url_for("get_films"))
             else:
@@ -424,9 +439,8 @@ def logout():
     """
     # remove user from the session cookies
     session.pop("user")
-       
     return get_films()
-    
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),

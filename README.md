@@ -85,13 +85,15 @@ on their existing movie viewing habits. Specifically my goals were to:
 W3C Markup Validator, W3C CSS Validator, and JSHint were used to test the code. 
 
 - WSC Markup - [Link to site](https://validator.w3.org/)
-    - get_films.html - <a href=""> Results PDF </a>
-    - login.html - <a href=""> Results PDF </a>
-    - register.html - <a href=""> Results PDF </a>
-    - base_templates.html - <a href=""> Results PDF </a>
+    - get_films.html - <a href="static/img/validation/get_films.html - Nu Html Checker.pdf"> Results PDF </a>
+    - login.html - <a href="static/img/validation/login.html - Nu Html Checker.pdf"> Results PDF </a>
+    - register.html - <a href="static/img/validation/register.html - Nu Html Checker.pdf"> Results PDF </a>
 - W3C CSS - [Link to site](https://jigsaw.w3.org/css-validator/#validate_by_input)
-    - style.css - <a href="">Results PDF </a>
+    - style.css - <a href="static/img/validation/W3C CSS Validator (CSS level 3 + SVG).pdf">Results PDF </a>
+- Python - [Link to site](https://jigsaw.w3.org/css-validator/#validate_by_input)
+    - app.py
 - JSHint - [Link to site](https://jshint.com/)
+    - script.js
 
 ## Testing User Stories
 
@@ -133,7 +135,7 @@ W3C Markup Validator, W3C CSS Validator, and JSHint were used to test the code.
 
 - In the future I may experiment with the JSON/BSON dependencies to better handle the database information.
 
-# Deployment
+# Deployment 
  X 
 
 
