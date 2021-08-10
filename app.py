@@ -337,6 +337,7 @@ def login():
 def logout():
     # remove user from the session cookies
     session.pop("user")
+       
     return get_films()
     
 

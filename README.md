@@ -1,7 +1,10 @@
 # Milestone Back-End Project
 
-The following project was my attempt to create a book recommendation website for users based on the movies they like. 
-This project makes use of HTML, CSS, Python, Jinja, and Javascript.
+The following project was my attempt to create a book recommendation website for users who are trying watch
+less television. To help with this the recommendations are based on the viewing habits of the visitors. Each film
+is suggested and added to the site by a user, as are the respective recommendations for each film. This site currently
+makes use of HTML, CSS, Python, Jinja, and Javascript. It also relies on Heroku for deployment and MongoDB for data
+storage. 
 
 [View live project](https://readflix.herokuapp.com/)
 
@@ -9,10 +12,10 @@ This project makes use of HTML, CSS, Python, Jinja, and Javascript.
 
 My goal was to create a website that would allow users interested in reading more to find books based
 on their existing movie viewing habits. Specifically my goals were to:
-    - Allow unregistered users to search for films and view their respective book recommendations
-    - Allow registered users to add films and recommendations to the site database. 
-        - Additionally only the admin and user who created the films/recommendation could edit/delete 
-          from the database. 
+- Allow unregistered users to search for films and view their respective book recommendations.
+- Allow registered users to add films and recommendations to the site database. 
+    - Only allow the user who created the film/recommendation OR admin to update
+    or delete them from the database. [The admin login is Username: admin / Password: bookmark]
 
 ## User Stories
 
@@ -27,7 +30,8 @@ on their existing movie viewing habits. Specifically my goals were to:
     1. As a Returning User, I want to be able to login to my account.
     2. As a Returning User, I would like to add films to the site so that others might offer 
     reading suggestions based on my preferences. 
-    3. As a Returning User, I would like to be able to upload my own book suggestions for certain films.    
+    3. As a Returning User, I would like to be able to upload my own book suggestions for certain films.
+        - I would also like to be able to alter or delete any recommendations I may have made.   
 
 ## Wireframes:
 <img src="static/img/wireframes/Landing Page.png">
@@ -124,9 +128,10 @@ W3C Markup Validator, W3C CSS Validator, and JSHint were used to test the code.
 
 - Tested on iPhone 7.
 
-# Known Bugs 
- X 
+# Known Bugs / Potential Improvements
+- Minor issues with scaling the images. 
 
+- In the future I may experiment with the JSON/BSON dependencies to better handle the database information.
 
 # Deployment
  X 

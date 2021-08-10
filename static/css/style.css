@@ -173,6 +173,14 @@ a div:hover {
     }
 }
 
+.btn-large {
+    height: 54px;
+    width: 150px;
+    line-height: 54px;
+    font-size: 15px;
+    padding: 0px;
+}
+
 @media only screen and (max-width: 451px) {
 .hover-btn {
     height: 32px;   
