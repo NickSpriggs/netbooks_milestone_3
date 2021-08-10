@@ -31,24 +31,22 @@
             <!--Poster Rows-->
         <div id="film-poster-section" class="col l10 m12 s12">
 
-                        {% if session.user %}
-                        <div class="poster col l2 m3 s4" onclick="addOn()" style="cursor: pointer; height: 300px">
-                            <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
-                        </div>
-                        {% endif %}
-                    
-                    
-                        {% for film in films %} 
-                            <a href="{{ url_for('get_film', film_title=film.title) }}">              
-                                <div class="poster col l2 m3 s4" style="background-image: url({{film.poster_url}});
-                                    background-position: center; background-size: cover;">
-                                    <div class="poster-img img_contain" style="height: 100%; overflow: hidden;">
-                                        {{ film.title }}
-                                    </div> 
-                                </div>
-                            </a>   
-                        {% endfor %}
-        
+            {% if session.user %}
+            <div class="poster col l2 m3 s4" onclick="addOn()" style="cursor: pointer; height: 300px">
+                <div class="poster-img" style="font-size: 50px; height: 100%; color: white;">+</div>                
+            </div>
+            {% endif %}
+                                     
+            {% for film in films %} 
+                <a href="{{ url_for('get_film', film_title=film.title) }}">              
+                    <div class="poster col l2 m3 s4" style="background-image: url({{film.poster_url}});
+                    background-position: center; background-size: cover;">
+                        <div class="poster-img img_contain" style="height: 100%; overflow: hidden;">
+                            {{ film.title }}
+                        </div> 
+                    </div>
+                </a>   
+            {% endfor %}
         </div>
 
         <!--Genre Navbar -->
