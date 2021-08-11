@@ -1,1 +1,1 @@
-$('.dropdown-trigger').dropdown({hover: "true"});
+$('.dropdown-trigger').dropdown();
