@@ -1,4 +1,4 @@
-# Milestone Back-End Project
+# Milestone Back-End Development Project
 
 The following project was my attempt to create a book recommendation website for users who are trying watch
 less television. To help with this the recommendations are based on the viewing habits of the visitors. Each film
