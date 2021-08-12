@@ -18,6 +18,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 # This is the instance of our Flask app using pyMongo
 
+# Global variables are for UX to track users' most recent searches
 searching = False
 searchQuery = ""
 
@@ -31,9 +32,8 @@ def index():
     """
 
     films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template(
-        "get_films.html", films=films, recs=recs, intro=True)
+        "get_films.html", films=films, intro=True)
 
 
 @app.route("/get_films")
@@ -47,8 +47,7 @@ def get_films():
     searching = False
 
     films = mongo.db.film_list.find().sort("date", -1)
-    recs = mongo.db.rec_list.find().sort("date", -1)
-    return render_template("get_films.html", films=films, recs=recs)
+    return render_template("get_films.html", films=films)
 
 
 @app.route("/get_film/<film_title>")
@@ -93,13 +92,12 @@ def search():
         searchQuery = query
 
         films = list(mongo.db.film_list.find({"$text": {"$search": query}}))
-        recs = mongo.db.rec_list.find().sort("date", -1)
         return render_template(
-            "get_films.html", films=films, recs=recs, search=searching,
+            "get_films.html", films=films, search=searching,
             searchQuery=searchQuery)
 
     return render_template(
-        "get_films.html", films=films, recs=recs, search=searching,
+        "get_films.html", films=films, search=searching,
         searchQuery=searchQuery)
 
 
@@ -118,10 +116,9 @@ def genre_search(genre):
     searchQuery = genre
 
     films = list(mongo.db.film_list.find({"$text": {"$search": genre}}))
-    recs = mongo.db.rec_list.find().sort("date", -1)
     return render_template(
         "get_films.html", films=films, search=searching,
-        searchQuery=searchQuery, recs=recs)
+        searchQuery=searchQuery)
 
 
 @app.route("/add_film", methods=["GET", "POST"])
@@ -168,6 +165,10 @@ def edit_film(film_title):
     film = mongo.db.film_list.find_one({"title": film_title})
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
+
+    # Check if a user is logged in
+    if not session:
+        return get_film(film_title)
 
     if request.method == "POST":
         # Check if film already exists
@@ -222,6 +223,10 @@ def delete_film(film_title):
     """
     global searching
     global searchQuery
+
+    # Check if a user is logged in
+    if not session:
+        return get_film(film_title)
 
     # Deletes film only for creator
     mongo.db.film_list.remove({
@@ -278,7 +283,7 @@ def add_rec():
         return get_film(request.form.get("title"))
 
     # Won't be called. Only POST.
-    return get_film(request.form.get("title"))
+    return get_films()
 
 
 @app.route("/edit_rec/<film_title>/<book>", methods=["GET", "POST"])
@@ -296,6 +301,10 @@ def edit_rec(film_title, book):
     recs = mongo.db.rec_list.find().sort("date", -1)
     editedRec = mongo.db.rec_list.find_one({"book": book, "title": film_title})
 
+    # Check if a user is logged in
+    if not session:
+        return get_film(film_title)
+
     if request.method == "POST":
         # Check if rec name already exists for film
         exists = mongo.db.rec_list.find_one({
@@ -305,14 +314,14 @@ def edit_rec(film_title, book):
         if exists:
             return get_film(request.form.get("title"))
 
-        # Find IF user recommended book for the film
+        # Find recommendation only if the user created it...
         filter = {
             'book': book,
             'title': film_title,
             'creator': session["user"]
         }
 
-        # If user is admin just find the book for film
+        # ...or if user is admin.
         if session["user"].lower() == "admin":
             filter = {
                 'book': book,
@@ -354,6 +363,11 @@ def delete_rec(film_title, book):
     in question. Like delete_film() The function then deletes it
     if the user is the admin or the recommendation's creator.
     """
+
+    # Check if a user is logged in
+    if not session:
+        return get_film(film_title)
+
     mongo.db.rec_list.remove({
         "book": book,
         "title": film_title,
@@ -437,7 +451,10 @@ def logout():
     Logs the user out by ending the session
     and returns them to the home page.
     """
-    # remove user from the session cookies
+    # returns user to get_films if not logged in
+    if not session:
+        return get_films()
+
     session.pop("user")
     return get_films()
 
