@@ -33,7 +33,7 @@ on their existing movie viewing habits. Specifically my goals were to:
     3. As a Returning User, I would like to be able to upload my own book suggestions for certain films.
         - I would also like to be able to alter or delete any recommendations I may have made.   
 
-## Wireframes:
+# Wireframes:
 <img src="static/img/wireframes/Landing Page.png">
 <img src="static/img/wireframes/Poster Click [Logged In].png">
 <img src="static/img/wireframes/Login:Register Page.png">
@@ -41,6 +41,11 @@ on their existing movie viewing habits. Specifically my goals were to:
 <img src="static/img/wireframes/Add Poster:Film [Logged In].png">
 <img src="static/img/wireframes/Poster Add Rec [Logged In].png">
 
+# Database Schema:
+MongoDB is used to store the data pertaining to this site. The relationship between the different databases can be seen
+below. 
+
+<img src="static/img/db_schema.png">
 
 # Features
 
@@ -99,7 +104,7 @@ W3C Markup Validator, W3C CSS Validator, and Pep8Online were used to test the co
 - Python - [Link to site](http://pep8online.com/)
     - app. py
         - <a href="static/img/validation/PEP8 online check - Results.pdf">Results PDF </a>
-        - <a href="static/img/validation/result_20210810_215333.txt">Results TXT </a>
+        - <a href="static/img/validation/result_20210812_193900.txt">Results TXT </a>
 
 
 ## Testing User Stories
@@ -146,8 +151,6 @@ W3C Markup Validator, W3C CSS Validator, and Pep8Online were used to test the co
 # Known Bugs / Potential Improvements
 
 - Minor issues with scaling the images. 
-
-- Going to the logout url when not logged in results in an error. 
 
 - In the future I may experiment with the JSON/BSON dependencies to better handle the database information.
 
