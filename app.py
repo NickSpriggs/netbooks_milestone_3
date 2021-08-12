@@ -184,7 +184,7 @@ def edit_film(film_title):
         }
 
         # If user didn't create it and user is not admin: get_films()
-        if not user_filter and session["user"].lower() == "admin":
+        if not user_filter and session["user"].lower() != "admin":
             return get_films()
 
         filter = {"title": film_title}
