@@ -171,37 +171,39 @@ def edit_film(film_title):
     if request.method == "POST":
         # Check if film already exists
         exists = mongo.db.film_list.find_one({
-            "title": request.form.get("title")
+            "title": request.form.get("title"),
+            "genre": request.form.get("genre")
             })
         if exists:
             return get_film(film_title)
 
-        # Check if user created film
-        userfilm = mongo.db.film_list.find_one({
-            "title": request.form.get("title"),
+        # Find film only if the user created it...
+        user_filter = {
+            "title": film_title,
             "creator": session["user"]
-        })
+        }
 
-        filter = {'title': film_title}
+        # If user didn't create it and user is not admin: get_films()
+        if not user_filter and session["user"].lower() == "admin":
+            return get_films()
+
+        filter = {"title": film_title}
 
         # New values for film
-        submit = {
+        submit = {"$set": {
             "title": request.form.get("title"),
             "genre": request.form.get("genre"),
             "poster_url": request.form.get("user_poster_url"),
             "creator": session["user"],
             "date": datetime.datetime.now(),
-        }
+        }}
 
-        # Only update if user is creator or "admin"
-        if userfilm or session["user"] == "admin":
-            newTitle = request.form.get("title")
-            mongo.db.film_list.update(filter, submit)
-            mongo.db.rec_list.update_many(filter, {"$set": {
-                "title": newTitle}})
-            return get_film(newTitle)
+        newTitle = request.form.get("title")
+        mongo.db.film_list.update(filter, submit)
+        mongo.db.rec_list.update_many(filter, {"$set": {
+            "title": newTitle}})
+        return get_film(newTitle)
 
-        return get_film(film_title)
     if searching:
         films = list(mongo.db.film_list.find({"$text": {
             "$search": searchQuery}}))
@@ -307,23 +309,24 @@ def edit_rec(film_title, book):
         # Check if rec name already exists for film
         exists = mongo.db.rec_list.find_one({
             "title": request.form.get("title"),
-            "book": request.form.get("book")
-            })
+            "book": request.form.get("book"),
+            "author": request.form.get("author")
+        })
         if exists:
             return get_film(request.form.get("title"))
 
         # Find recommendation only if the user created it...
         filter = {
-            'book': book,
-            'title': film_title,
-            'creator': session["user"]
+            "book": book,
+            "title": film_title,
+            "creator": session["user"]
         }
 
         # ...or if user is admin.
         if session["user"].lower() == "admin":
             filter = {
-                'book': book,
-                'title': film_title,
+                "book": book,
+                "title": film_title,
             }
 
         # New values for recommendation
@@ -334,13 +337,7 @@ def edit_rec(film_title, book):
             "creator": session["user"],
             "date": datetime.datetime.now()
         }}
-
         mongo.db.rec_list.update_one(filter, newvalues)
-
-        if searching:
-            films = list(mongo.db.film_list.find({"$text": {
-                "$search": searchQuery}}))
-
         return get_film(request.form.get("title"))
 
     if searching:

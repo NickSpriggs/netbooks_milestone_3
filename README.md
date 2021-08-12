@@ -14,7 +14,7 @@ My goal was to create a website that would allow users interested in reading mor
 on their existing movie viewing habits. Specifically my goals were to:
 - Allow unregistered users to search for films and view their respective book recommendations.
 - Allow registered users to add films and recommendations to the site database. 
-    - Only allow the user who created the film/recommendation OR admin to update
+    - Only allow the admin and the user who created the film/recommendation to update
     or delete them from the database. [The admin login is username: admin / password: bookmark]
 
 ## User Stories
