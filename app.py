@@ -96,9 +96,7 @@ def search():
             "get_films.html", films=films, search=searching,
             searchQuery=searchQuery)
 
-    return render_template(
-        "get_films.html", films=films, search=searching,
-        searchQuery=searchQuery)
+    return get_films()
 
 
 @app.route("/genre_search/<genre>")
@@ -149,7 +147,7 @@ def add_film():
         return redirect(url_for("get_film", film_title=title))
 
     # Won't be called. Only POST.
-    return render_template("get_films.html")
+    return get_films()
 
 
 @app.route("/edit_film/<film_title>", methods=["GET", "POST"])
