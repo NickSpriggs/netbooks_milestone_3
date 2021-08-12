@@ -47,6 +47,9 @@ below.
 
 <img src="static/img/db_schema.png">
 
+Each user has a name and password. When a user creates a film, their name is stored in the film. Likewise when a user 
+creates a recommendation for a film their name, as well as the film's title, is stored in the recommendation. 
+
 # Features
 
 - Mobile, desktop, and tablet scalable.
@@ -73,7 +76,7 @@ below.
 
 - [FontAwesome](https://fontawesome.com/): Provided icons for certain features.
 
-- [Photoshop](https://photoshop.com/en): This was used to design the site's wireframes. 
+- [Photoshop](https://photoshop.com/en): This was used to design the site's wireframes and database schema. 
 
 - [FontMeme](https://www.fontmeme.com/): This was used to design the logo. 
 
