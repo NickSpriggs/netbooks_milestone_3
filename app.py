@@ -177,15 +177,15 @@ def edit_film(film_title):
         if exists:
             return get_film(film_title)
 
-        # Find film only if the user created it...
-        user_filter = {
+        # Find if the user created it...
+        user_filter = mongo.db.film_list.find_one({
             "title": film_title,
             "creator": session["user"]
-        }
+        })
 
         # If user didn't create it and user is not admin: get_films()
         if not user_filter and session["user"].lower() != "admin":
-            return get_films()
+            return get_film(film_title)
 
         filter = {"title": film_title}
 
@@ -228,20 +228,19 @@ def delete_film(film_title):
     if not session:
         return get_film(film_title)
 
-    # Deletes film only for creator
-    mongo.db.film_list.remove({
+    # Find if the user created it...
+    user_filter = mongo.db.film_list.find_one({
         "title": film_title,
-        "creator": session["user"].lower()})
-    mongo.db.rec_list.remove({
-        "title": film_title,
-        "creator": session["user"].lower()})
+        "creator": session["user"]
+    })
 
-    # Deletes film for admin
-    if session["user"].lower() == "admin":
-        mongo.db.film_list.remove({
-            "title": film_title})
-        mongo.db.rec_list.remove({
-            "title": film_title})
+    if not user_filter and session["user"].lower() != "admin":
+        return get_film(film_title)
+
+    mongo.db.film_list.remove({
+        "title": film_title})
+    mongo.db.rec_list.remove({
+        "title": film_title})
 
     films = mongo.db.film_list.find().sort("date", -1)
     recs = mongo.db.rec_list.find().sort("date", -1)
@@ -358,20 +357,23 @@ def delete_rec(film_title, book):
     in question. Like delete_film() The function then deletes it
     if the user is the admin or the recommendation's creator.
     """
-
     # Check if a user is logged in
     if not session:
         return get_film(film_title)
 
-    mongo.db.rec_list.remove({
+    # Find if the user created it...
+    user_filter = mongo.db.rec_list.find_one({
         "book": book,
         "title": film_title,
-        "creator": session["user"].lower()})
+        "creator": session["user"].lower()
+    })
 
-    if session["user"].lower() == "admin":
-        mongo.db.rec_list.remove({
-            "book": book,
-            "title": film_title})
+    if not user_filter and session["user"].lower() != "admin":
+        return get_film(film_title)
+
+    mongo.db.rec_list.remove({
+        "book": book,
+        "title": film_title})
 
     return get_film(film_title)
 
