@@ -172,7 +172,8 @@ def edit_film(film_title):
         # Check if film already exists
         exists = mongo.db.film_list.find_one({
             "title": request.form.get("title"),
-            "genre": request.form.get("genre")
+            "genre": request.form.get("genre"),
+            "poster_url": request.form.get("user_poster_url")
             })
         if exists:
             return get_film(film_title)
@@ -262,7 +263,7 @@ def add_rec():
     get_film() page with the new recommendation as the first in the list.
     """
     if request.method == "POST":
-        # Check if rec already exists for film
+        # Check if film recommendation already exists
         exists = mongo.db.rec_list.find_one({
             "title": request.form.get("title"),
             "book": request.form.get("book")
@@ -305,7 +306,7 @@ def edit_rec(film_title, book):
         return get_film(film_title)
 
     if request.method == "POST":
-        # Check if rec name already exists for film
+        # Check if edited film recommendation already exists
         exists = mongo.db.rec_list.find_one({
             "title": request.form.get("title"),
             "book": request.form.get("book"),
