@@ -156,10 +156,9 @@ W3C Markup Validator, W3C CSS Validator, and Pep8Online were used to test the co
 - Minor issues with scaling the images. 
 
 - I'm still having trouble getting the different search functions to work. Ideally the search bar
-results would focus on the film titles while the genre navbar results would focus on the genre film genres.  
-At the moment though both Search() and Genre_Search() query a shared text index made of both film titles and genres,
-so if a user were to Search("Horror") it would bring up all the films of that genre, likewise if they were to select
-Genre_Search("Romance") it may bring up films with the word "Romance" in the title as well.
+results would focus on the film titles while the genre navbar results would focus on the genre film genres. At the moment both Search() and Genre_Search() query a shared text index made of both film titles and genres,
+so if a user were to Search("Horror") it would also bring up all the films of that genre, while if they were to select
+Genre_Search("Romance") it would also bring up all the films with the word "Romance" in the title.
 
 - In the future I may experiment with the JSON/BSON dependencies to better handle the database information.
 
