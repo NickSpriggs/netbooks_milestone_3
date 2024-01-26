@@ -1,6 +1,6 @@
 # Milestone Back-End Development Project
 
-The following project was my attempt to create a book recommendation website for users who are trying watch
+The following project is my attempt to create a book recommendation website for users who are trying watch
 less television. To help with this the recommendations are based on the viewing habits of the visitors. Each film
 is suggested and added to the site by a user, as are the respective recommendations for each film. This site currently
 makes use of HTML, CSS, Python, Jinja, and Javascript. It also relies on Heroku for deployment and MongoDB for data
